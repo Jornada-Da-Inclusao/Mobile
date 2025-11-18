@@ -15,6 +15,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.integra_kids_mobile.API.GameService;
 import com.example.integra_kids_mobile.R;
 import com.example.integra_kids_mobile.games.components.KeyView;
 import com.example.integra_kids_mobile.games.components.KeyViewStateEnum;
@@ -125,6 +126,12 @@ public class JogoCores extends AppCompatActivity {
                     if (placedColorBoxes == colorViewState.toArray().length) {
                         infoJogos.terminarJogo();
                         timer.stopTimer();
+
+                        try {
+                            GameService.cadastrarInfo(this, infoJogos.getDependenteId(), infoJogos.getInfoJogos_id_fk(), infoJogos.getAcertos(), infoJogos.getErros(), infoJogos.getTempoTotal());
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        };
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                             .setPositiveButton("Voltar", new DialogInterface.OnClickListener() {

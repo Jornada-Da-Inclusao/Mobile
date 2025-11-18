@@ -3,10 +3,12 @@ package com.example.integra_kids_mobile.games;
 import java.util.Calendar;
 
 public class InfoJogos {
+    private int id;
     private Calendar comeco;
     private int tempoTotal;
     private int tentativas, acertos, erros;
-    private long infoJogos_id_fk, dependente;
+
+    private long infoJogos_id_fk, dependenteId;
 
     public InfoJogos(long infoJogosIdFk, long dependenteId) {
         this.comeco = Calendar.getInstance();
@@ -14,7 +16,7 @@ public class InfoJogos {
         this.acertos = 0;
         this.erros = 0;
         this.infoJogos_id_fk = infoJogosIdFk;
-        this.dependente = dependenteId;
+        this.dependenteId = dependenteId;
     }
 
     public int getTempoTotal() {
@@ -51,4 +53,21 @@ public class InfoJogos {
     public void terminarJogo() {
         this.tempoTotal = Calendar.getInstance().compareTo(this.comeco);
     }
+
+    public long getInfoJogos_id_fk() {
+        return infoJogos_id_fk;
+    }
+
+    public void setInfoJogos_id_fk(long infoJogos_id_fk) {
+        this.infoJogos_id_fk = infoJogos_id_fk;
+    }
+
+    public long getDependenteId() {
+        return dependenteId;
+    }
+
+    public void setDependenteId(long dependenteId) {
+        this.dependenteId = dependenteId;
+    }
+
 }

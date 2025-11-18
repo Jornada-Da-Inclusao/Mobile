@@ -17,12 +17,13 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.integra_kids_mobile.API.GameService;
 import com.example.integra_kids_mobile.R;
 import com.example.integra_kids_mobile.games.components.Timer;
 import com.example.integra_kids_mobile.games.InfoJogos;
 
 public class JogoVogais extends AppCompatActivity {
-    private final long id = 1;
+    private final long id = 3;
     private final InfoJogos infoJogos = new InfoJogos(this.id, 0); // hardcoded
     private TextView[] letterBoxes = new TextView[26];
     private int size = 0;
@@ -103,6 +104,12 @@ public class JogoVogais extends AppCompatActivity {
                     if (placedKeyViews == vogais.length) {
                         infoJogos.terminarJogo();
                         timer.stopTimer();
+
+                        try {
+                            GameService.cadastrarInfo(this, infoJogos.getDependenteId(), infoJogos.getInfoJogos_id_fk(), infoJogos.getAcertos(), infoJogos.getErros(), infoJogos.getTempoTotal());
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        };
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                                 .setPositiveButton("Voltar", new DialogInterface.OnClickListener() {

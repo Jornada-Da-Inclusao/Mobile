@@ -43,57 +43,57 @@ public class UsuarioConfig extends Fragment {
         radioSystem = view.findViewById(R.id.radioButton);
         radioLight = view.findViewById(R.id.radioButton2);
         radioDark = view.findViewById(R.id.radioButton3);
-        // textDevStatus = view.findViewById(R.id.textDevStatus);
-        // btnDevApi = view.findViewById(R.id.btnDevApi);
+        textDevStatus = view.findViewById(R.id.textDevStatus);
+        btnDevApi = view.findViewById(R.id.btnDevApi);
 
         // 🔄 Botão para testar o backend com várias tentativas
-        // btnDevApi.setOnClickListener(v -> {
-        //     textDevStatus.setText("Testando conexão com o servidor...");
+        btnDevApi.setOnClickListener(v -> {
+            textDevStatus.setText("Testando conexão com o servidor...");
 
-        //     new Thread(() -> {
-        //         int maxTentativas = 15;
-        //         int tentativa = 0;
-        //         boolean sucesso = false;
+            new Thread(() -> {
+                int maxTentativas = 15;
+                int tentativa = 0;
+                boolean sucesso = false;
 
-        //         while (tentativa < maxTentativas && !sucesso) {
-        //             tentativa++;
-        //             final int tentativaAtual = tentativa;
+                while (tentativa < maxTentativas && !sucesso) {
+                    tentativa++;
+                    final int tentativaAtual = tentativa;
 
-        //             try {
-        //                 // Mostra tentativa atual
-        //                 requireActivity().runOnUiThread(() ->
-        //                         textDevStatus.setText("🔄 Tentando conectar... (" + tentativaAtual + "/" + maxTentativas + ")"));
+                    try {
+                        // Mostra tentativa atual
+                        requireActivity().runOnUiThread(() ->
+                                textDevStatus.setText("🔄 Tentando conectar... (" + tentativaAtual + "/" + maxTentativas + ")"));
 
-        //                 // Faz o ping (pode ser /ping, /health ou / dependendo da tua API)
-        //                 String response = ApiClient.get("/");
+                        // Faz o ping (pode ser /ping, /health ou / dependendo da tua API)
+                        String response = ApiClient.get("/");
 
-        //                 // Se não lançar exceção, conexão bem-sucedida
-        //                 sucesso = true;
-        //                 final String respostaFinal = response;
+                        // Se não lançar exceção, conexão bem-sucedida
+                        sucesso = true;
+                        final String respostaFinal = response;
 
-        //                 requireActivity().runOnUiThread(() ->
-        //                         textDevStatus.setText("✅ Servidor ativo! Resposta: " + respostaFinal));
+                        requireActivity().runOnUiThread(() ->
+                                textDevStatus.setText("✅ Servidor ativo! Resposta: " + respostaFinal));
 
-        //             } catch (Exception e) {
-        //                 // Exibe falha da tentativa atual
-        //                 requireActivity().runOnUiThread(() ->
-        //                         textDevStatus.setText("❌ Tentativa " + tentativaAtual + " falhou..."));
+                    } catch (Exception e) {
+                        // Exibe falha da tentativa atual
+                        requireActivity().runOnUiThread(() ->
+                                textDevStatus.setText("❌ Tentativa " + tentativaAtual + " falhou..."));
 
-        //                 try {
-        //                     // Espera 1 segundo antes da próxima tentativa
-        //                     Thread.sleep(1000);
-        //                 } catch (InterruptedException ex) {
-        //                     ex.printStackTrace();
-        //                 }
-        //             }
-        //         }
+                        try {
+                            // Espera 1 segundo antes da próxima tentativa
+                            Thread.sleep(1000);
+                        } catch (InterruptedException ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+                }
 
-        //         if (!sucesso) {
-        //             requireActivity().runOnUiThread(() ->
-        //                     textDevStatus.setText("❌ Falha após " + maxTentativas + " tentativas. Servidor inativo."));
-        //         }
-        //     }).start();
-        // });
+                if (!sucesso) {
+                    requireActivity().runOnUiThread(() ->
+                            textDevStatus.setText("❌ Falha após " + maxTentativas + " tentativas. Servidor inativo."));
+                }
+            }).start();
+        });
 
         // 🎨 Recupera e aplica o tema atual
         SharedPreferences prefs = requireContext().getSharedPreferences("AppPrefs", requireContext().MODE_PRIVATE);

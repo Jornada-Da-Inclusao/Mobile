@@ -16,7 +16,7 @@
 
         <!-- AGORA ESTA É A PRINCIPAL -->
         <activity
-            android:name=".MenuPrincipal"
+            android:name=".ConexaoActivity"
             android:exported="true">
 
             <intent-filter>
@@ -62,12 +62,10 @@
             android:name=".games.views.jogo_cores.JogoCores"
             android:exported="false" />
 
-        <!--
         <activity
             android:name=".MenuPrincipal"
             android:exported="false"
             android:label="@string/title_activity_menu_principal" />
-        -->
 
         <activity
             android:name=".LoginCadastro"
