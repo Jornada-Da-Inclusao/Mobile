@@ -23,6 +23,8 @@ import com.example.integra_kids_mobile.R;
 import com.example.integra_kids_mobile.common.ReturnButton;
 import com.example.integra_kids_mobile.games.components.Timer;
 import com.example.integra_kids_mobile.games.InfoJogos;
+import com.example.integra_kids_mobile.music.BackgroundMusics;
+import com.example.integra_kids_mobile.music.SoundEffects;
 
 import org.json.JSONObject;
 
@@ -85,6 +87,7 @@ public class JogoVogais extends AppCompatActivity {
 
             // ========= CLICK EM UMA LETRA =========
             letterView.setOnClickListener(v -> {
+                SoundEffects.tocarClique();
                 final TextView kv = (TextView) v;
 
                 if (!kv.isFocusable()) return;
@@ -123,6 +126,7 @@ public class JogoVogais extends AppCompatActivity {
 
             if (this.selectedLetterBoxIdx == vogais[letterToBePlaced] - 'a') {
 
+                SoundEffects.tocarAcerto();
                 infoJogos.setAcertos(infoJogos.getAcertos() + 1);
                 placedKeyViews++;
 
@@ -144,6 +148,9 @@ public class JogoVogais extends AppCompatActivity {
                     infoJogos.terminarJogo();
                     timer.stopTimer();
 
+                    BackgroundMusics.stop();
+                    SoundEffects.tocarSucesso();
+
                     registrarResultadoPartida(
                             dependenteId,
                             this.id,
@@ -162,11 +169,36 @@ public class JogoVogais extends AppCompatActivity {
                 }
 
             } else {
+                SoundEffects.tocarErro();
                 infoJogos.setErros(infoJogos.getErros() + 1);
             }
         });
 
         infoJogos.comecarJogo();
+
+        SoundEffects.init(this);
+        BackgroundMusics.start(this, R.raw.music4);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Pausa a música quando o app for para segundo plano
+        BackgroundMusics.pause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Retoma a música quando o usuário voltar para o app
+        BackgroundMusics.resume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Isso garante que, ao sair desta tela (ou fechar o jogo), a música pare totalmente
+        BackgroundMusics.stop();
     }
 
     private void registrarResultadoPartida(

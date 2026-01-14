@@ -17,6 +17,8 @@ import com.example.integra_kids_mobile.games.views.jogo_memoria.KeyView;
 import com.example.integra_kids_mobile.games.components.Timer;
 import com.example.integra_kids_mobile.API.GameService;
 import com.example.integra_kids_mobile.model.CardModel;
+import com.example.integra_kids_mobile.music.BackgroundMusics;
+import com.example.integra_kids_mobile.music.SoundEffects;
 
 import org.json.JSONObject;
 
@@ -56,6 +58,29 @@ public class JogoMemoria extends AppCompatActivity {
 
         carregarCartas();
         infoJogos.comecarJogo();
+
+        SoundEffects.init(this);
+        BackgroundMusics.start(this, R.raw.music1);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Pausa a música quando o app for para segundo plano
+        BackgroundMusics.pause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Retoma a música quando o usuário voltar para o app
+        BackgroundMusics.resume();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Isso garante que, ao sair desta tela (ou fechar o jogo), a música pare totalmente
+        BackgroundMusics.stop();
     }
 
     private void carregarCartas() {
@@ -107,6 +132,7 @@ public class JogoMemoria extends AppCompatActivity {
     private void flipCard(int index) {
         if (cardsChosenId.contains(index) || cardsWon.contains(index)) return;
 
+        SoundEffects.tocarClique();
         cardsChosenId.add(index);
         KeyView kv = (KeyView) gridLayout.getChildAt(index);
         kv.reveal();
@@ -127,8 +153,10 @@ public class JogoMemoria extends AppCompatActivity {
         if (c1.name.equals(c2.name)) {
             cardsWon.add(id1);
             cardsWon.add(id2);
+            SoundEffects.tocarAcerto();
             infoJogos.setAcertos(infoJogos.getAcertos() + 1);
         } else {
+            SoundEffects.tocarErro();
             infoJogos.setErros(infoJogos.getErros() + 1);
             ((KeyView) gridLayout.getChildAt(id1)).hide();
             ((KeyView) gridLayout.getChildAt(id2)).hide();
@@ -145,6 +173,8 @@ public class JogoMemoria extends AppCompatActivity {
         infoJogos.terminarJogo();
         timer.stopTimer();
 
+        BackgroundMusics.stop();
+        SoundEffects.tocarSucesso();
         registrarResultadoPartida();
 
         new AlertDialog.Builder(this)

@@ -37,11 +37,11 @@ public class ConexaoActivity extends AppCompatActivity {
                 "Só mais um instante...",
                 "Tocando a Song of Time para acelerar o carregamento...",
                 "Estamos acordando o servidor...",
-                "Checando se os fios do servidor  não foram parar em Pharloom...",
+                "Checando se os fios do servidor não foram parar em Pharloom...",
                 "Checando os circuitos de redstone...",
                 "Procurando a conexão dentro de uma caixa de papelão...",
-                "Conectando ao servidor da NASA, só que não...",
-                "Carregando o Ki da conexão...",
+                "Conectando ao servidor da NASA (só que não)...",
+                "Elevando o Ki da conexão...",
                 "Esperar te enche de determinação...",
                 "Conectando..."
         };

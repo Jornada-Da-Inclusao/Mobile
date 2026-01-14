@@ -25,6 +25,8 @@ import com.example.integra_kids_mobile.games.components.Timer;
 import com.example.integra_kids_mobile.games.components.jogo_cores.ColorView;
 import com.example.integra_kids_mobile.games.InfoJogos;
 import com.example.integra_kids_mobile.API.GameService;
+import com.example.integra_kids_mobile.music.BackgroundMusics;
+import com.example.integra_kids_mobile.music.SoundEffects;
 
 import org.json.JSONObject;
 
@@ -109,6 +111,7 @@ public class JogoCores extends AppCompatActivity {
             final View container = currentData.getContainer();
             // Coloque a cor no seu respectivo container
             container.setOnClickListener(v -> {
+                SoundEffects.tocarClique();
                 final ColorViewState cvs = colorViewState.get(this.selectedColorBoxIdx);
                 final ColorView cv = cvs.getColorView();
 
@@ -116,6 +119,7 @@ public class JogoCores extends AppCompatActivity {
 
                 if (this.selectedColorBoxIdx == currentData.getId() && !cv.isPlaced()) {
 
+                    SoundEffects.tocarAcerto();
                     infoJogos.setAcertos(infoJogos.getAcertos() + 1);
                     placedColorBoxes += 1;
 
@@ -140,6 +144,9 @@ public class JogoCores extends AppCompatActivity {
 
                         infoJogos.terminarJogo();
                         timer.stopTimer();
+
+                        BackgroundMusics.stop();
+                        SoundEffects.tocarSucesso();
 
                         registrarResultadoPartida(
                                 dependenteId,
@@ -169,6 +176,7 @@ public class JogoCores extends AppCompatActivity {
                         dialog.show();
                     }
                 } else {
+                    SoundEffects.tocarErro();
                     infoJogos.setErros(infoJogos.getErros() + 1);
                 }
             });
@@ -179,6 +187,7 @@ public class JogoCores extends AppCompatActivity {
                 if (kv.isPlaced()) {
                     return;
                 }
+                SoundEffects.tocarClique();
 
                 // Restaure a cor do colorbox se já tocado
                 if (this.selectedColorBoxIdx == kv.getId()) {
@@ -197,6 +206,29 @@ public class JogoCores extends AppCompatActivity {
         }
 
         infoJogos.comecarJogo();
+
+        SoundEffects.init(this);
+        BackgroundMusics.start(this, R.raw.music3);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Pausa a música quando o app for para segundo plano
+        BackgroundMusics.pause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Retoma a música quando o usuário voltar para o app
+        BackgroundMusics.resume();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Isso garante que, ao sair desta tela (ou fechar o jogo), a música pare totalmente
+        BackgroundMusics.stop();
     }
 
     private void registrarResultadoPartida(

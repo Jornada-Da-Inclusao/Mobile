@@ -27,6 +27,8 @@ import com.example.integra_kids_mobile.games.components.KeyViewStateEnum;
 import com.example.integra_kids_mobile.games.components.Timer;
 import com.example.integra_kids_mobile.games.InfoJogos;
 import com.example.integra_kids_mobile.games.components.jogo_numeros.NumeroView;
+import com.example.integra_kids_mobile.music.BackgroundMusics;
+import com.example.integra_kids_mobile.music.SoundEffects;
 
 import org.json.JSONObject;
 
@@ -60,6 +62,9 @@ public class JogoNumeros extends AppCompatActivity {
         FrameLayout rootLayout = findViewById(R.id.timer);
         rootLayout.addView(timer);
         timer.startTimer();
+
+        SoundEffects.init(this);
+        BackgroundMusics.start(this, R.raw.music2);
 
         GridLayout gridLayout = findViewById(R.id.numeros_grid);
 
@@ -100,6 +105,7 @@ public class JogoNumeros extends AppCompatActivity {
                 infoJogos.setTentativas(infoJogos.getTentativas() + 1);
 
                 if (this.selectedNumberBoxIdx == numberToBePlaced) {
+                    SoundEffects.tocarAcerto();
                     infoJogos.setAcertos(infoJogos.getAcertos() + 1);
                     placedKeyViews += 1;
 
@@ -121,6 +127,8 @@ public class JogoNumeros extends AppCompatActivity {
                         infoJogos.terminarJogo();
                         timer.stopTimer();
 
+                        BackgroundMusics.stop();
+                        SoundEffects.tocarSucesso();
                         registrarResultadoPartida(
                                 dependenteId,
                                 this.id,     // ou this.id, depende do que sua API espera
@@ -149,6 +157,7 @@ public class JogoNumeros extends AppCompatActivity {
                         dialog.show();
                     }
                 } else {
+                    SoundEffects.tocarErro();
                     infoJogos.setErros(infoJogos.getErros() + 1);
                 }
             });
@@ -160,6 +169,7 @@ public class JogoNumeros extends AppCompatActivity {
                     return;
                 }
 
+                SoundEffects.tocarClique();
                 GradientDrawable _drawable;
 
                 // Restaure a cor do colorbox se já tocado
@@ -182,6 +192,26 @@ public class JogoNumeros extends AppCompatActivity {
         }
 
         infoJogos.comecarJogo();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Pausa a música quando o app for para segundo plano
+        BackgroundMusics.pause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Retoma a música quando o usuário voltar para o app
+        BackgroundMusics.resume();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Isso garante que, ao sair desta tela (ou fechar o jogo), a música pare totalmente
+        BackgroundMusics.stop();
     }
 
     private void registrarResultadoPartida(
