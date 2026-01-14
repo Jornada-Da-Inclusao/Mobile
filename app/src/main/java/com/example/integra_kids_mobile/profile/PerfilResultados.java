@@ -55,7 +55,7 @@ import java.util.Map;
 public class PerfilResultados extends AppCompatActivity {
 
     private LinearLayout layoutResult;
-    private Button btnChooseChild, btnChooseGraph;
+    private Button btnChooseChild, btnChooseGraph, btnPDF, btnExcel;
     private TextView textGraph;
     private HistoricoAdapter adapter;
 
@@ -65,6 +65,8 @@ public class PerfilResultados extends AppCompatActivity {
     private PieChart pieChart;
     private RadarChart radarChart;
     private RecyclerView recyclerHistorico;
+
+    private int idDependenteSelecionado = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,8 +86,28 @@ public class PerfilResultados extends AppCompatActivity {
         radarChart = findViewById(R.id.radarChart);
         recyclerHistorico = findViewById(R.id.recyclerHistorico);
 
+        btnPDF = findViewById(R.id.btnPDF);
+        btnExcel = findViewById(R.id.btnExcel);
+
         layoutResult.setVisibility(GONE);
         btnChooseGraph.setEnabled(false);
+
+        btnPDF.setOnClickListener(v -> {
+            if (idDependenteSelecionado != -1) {
+                // 🔹 Agora o ID está correto e disponível!
+                DependenteService.baixarRelatorioPdf(this, idDependenteSelecionado);
+            } else {
+                Toast.makeText(this, "Por favor, selecione uma criança primeiro", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        btnExcel.setOnClickListener(v -> {
+            if (idDependenteSelecionado != -1) {
+                DependenteService.baixarRelatorioExcel(this, idDependenteSelecionado);
+            } else {
+                Toast.makeText(this, "Por favor, selecione uma criança primeiro", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         // Inicializa RecyclerView com lista vazia
         recyclerHistorico.setLayoutManager(new LinearLayoutManager(this));
@@ -95,8 +117,8 @@ public class PerfilResultados extends AppCompatActivity {
 
         // Configura botões
         btnChooseChild.setOnClickListener(v -> abrirDialogDependentes(obj -> {
-            int dependenteId = obj.optInt("id", -1);
-            carregarResultados(dependenteId);
+            idDependenteSelecionado = obj.optInt("id", -1);
+            carregarResultados(idDependenteSelecionado);
             layoutResult.setVisibility(VISIBLE);
             btnChooseGraph.setEnabled(true);
             btnChooseGraph.setBackgroundColor(getResources().getColor(R.color.tint));

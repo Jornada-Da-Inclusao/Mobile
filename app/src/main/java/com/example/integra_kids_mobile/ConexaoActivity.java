@@ -33,9 +33,16 @@ public class ConexaoActivity extends AppCompatActivity {
         String[] frases = {
                 "Preparando tudo pra você...",
                 "Quase lá...",
+                "Imbuindo o server com a luz do Viajante...",
                 "Só mais um instante...",
+                "Tocando a Song of Time para acelerar o carregamento...",
                 "Estamos acordando o servidor...",
-                "Acendendo as tochas de redstone...",
+                "Checando se os fios do servidor  não foram parar em Pharloom...",
+                "Checando os circuitos de redstone...",
+                "Procurando a conexão dentro de uma caixa de papelão...",
+                "Conectando ao servidor da NASA, só que não...",
+                "Carregando o Ki da conexão...",
+                "Esperar te enche de determinação...",
                 "Conectando..."
         };
 
