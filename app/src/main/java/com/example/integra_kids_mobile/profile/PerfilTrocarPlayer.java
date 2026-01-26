@@ -142,6 +142,8 @@ public class PerfilTrocarPlayer extends AppCompatActivity implements JogadorAdap
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(KEY_SELECTED_PLAYER_ID, jogador.getId());
         editor.putString(KEY_SELECTED_PLAYER_NAME, jogador.getNome());
+        String url = com.example.integra_kids_mobile.utils.AvatarMapper.getAvatarUrlFromResource(jogador.getImagemResId());
+        editor.putString("selected_player_photo_url", url);
         editor.apply();
 
         // opcional: retornar a activity anterior

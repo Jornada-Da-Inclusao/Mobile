@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quem vai jogar agora?"
+        android:textColor="@color/text"
+        android:textSize="16sp" />
+
+    <ImageView
+        android:id="@+id/imgPlayerModal"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="12dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/player_icon_null" />
+
+    <TextView
+    android:id="@+id/tvNomePlayer"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Nome do Player"
+    android:textColor="@color/text"
+    android:textSize="22sp"
+        android:layout_marginBottom="30dp"
+    android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btnConfirmarPlayer"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="@color/green"
+        android:text="USAR ESSE JOGADOR"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btnTrocarPlayer"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TROCAR JOGADOR"
+        android:textColor="@color/red" />
+
+</LinearLayout>

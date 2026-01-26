@@ -33,7 +33,7 @@ public class ConexaoActivity extends AppCompatActivity {
         String[] frases = {
                 "Preparando tudo pra você...",
                 "Quase lá...",
-                "Imbuindo o server com a luz do Viajante...",
+                "Imbuindo o server com a luz do Traveler...",
                 "Só mais um instante...",
                 "Tocando a Song of Time para acelerar o carregamento...",
                 "Estamos acordando o servidor...",
@@ -47,10 +47,11 @@ public class ConexaoActivity extends AppCompatActivity {
         };
 
         new Thread(() -> {
+            java.util.Random random = new java.util.Random();
             for (int i = 1; i <= 15; i++) {
 
                 int tentativa = i;
-                String frase = frases[i % frases.length];
+                String frase = frases[random.nextInt(frases.length)];
 
                 runOnUiThread(() -> {
                     tvStatus.setText("Conectando ao servidor :\nTentativa " + tentativa + " de 15...");
