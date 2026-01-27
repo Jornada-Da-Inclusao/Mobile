@@ -11,7 +11,7 @@
         android:text="Qual nível?"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:textColor="@color/text"
+        android:textColor="@color/white"
         android:layout_marginBottom="20dp"/>
 
     <Button
@@ -26,22 +26,18 @@
 
     <Button
         android:id="@+id/btnMedio"
-        android:enabled="false"
-        android:alpha="0.5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="🔒 Médio 🔒"
+        android:text="Médio"
         android:textColor="@color/black"
         android:backgroundTint="@color/yellow"
         android:layout_marginBottom="10dp"/>
 
     <Button
         android:id="@+id/btnDificil"
-        android:enabled="false"
-        android:alpha="0.5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="🔒 Difícil 🔒"
+        android:text="Difícil"
         android:textColor="@color/black"
         android:backgroundTint="@color/red"/>
 </LinearLayout>

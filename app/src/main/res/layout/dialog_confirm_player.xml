@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Quem vai jogar agora?"
-        android:textColor="@color/text"
+        android:textColor="@color/white"
         android:textSize="16sp" />
 
     <ImageView
@@ -27,7 +27,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="Nome do Player"
-    android:textColor="@color/text"
+    android:textColor="@color/white"
     android:textSize="22sp"
         android:layout_marginBottom="30dp"
     android:textStyle="bold" />

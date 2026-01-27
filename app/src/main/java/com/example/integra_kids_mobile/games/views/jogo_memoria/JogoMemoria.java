@@ -91,7 +91,13 @@ public class JogoMemoria extends AppCompatActivity {
                 R.drawable.pequena3,
                 R.drawable.pequena4,
                 R.drawable.pequena5,
-                R.drawable.pequena6
+                R.drawable.pequena6,
+                R.drawable.pequena7,
+                R.drawable.pequena8,
+                R.drawable.pequena9,
+                R.drawable.pequena10,
+                R.drawable.pequena11,
+                R.drawable.pequena12
         };
 
         cards.clear();
