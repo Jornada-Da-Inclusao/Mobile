@@ -36,7 +36,7 @@
             android:exported="false" />
         <activity
             android:name=".games.views.jogo_memoria.JogoMemoria2"
-            android:exported="false" /> <!-- AGORA ESTA É A PRINCIPAL -->
+            android:exported="false" />
         <activity
             android:name=".ConexaoActivity"
             android:exported="true" >

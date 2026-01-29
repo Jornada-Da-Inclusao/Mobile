@@ -18,15 +18,18 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.example.integra_kids_mobile.API.GameService;
 import com.example.integra_kids_mobile.R;
+import com.example.integra_kids_mobile.common.GameResultDialog;
 import com.example.integra_kids_mobile.common.ReturnButton;
 import com.example.integra_kids_mobile.games.components.KeyView;
 import com.example.integra_kids_mobile.games.components.KeyViewStateEnum;
 import com.example.integra_kids_mobile.games.components.Timer;
 import com.example.integra_kids_mobile.games.InfoJogos;
 import com.example.integra_kids_mobile.games.components.jogo_numeros.NumeroView;
+import com.example.integra_kids_mobile.games.views.jogo_memoria.JogoMemoria;
 import com.example.integra_kids_mobile.music.BackgroundMusics;
 import com.example.integra_kids_mobile.music.SoundEffects;
 
@@ -61,8 +64,17 @@ public class JogoNumeros extends AppCompatActivity {
         Timer timer = new Timer(this);
         FrameLayout rootLayout = findViewById(R.id.timer);
         rootLayout.addView(timer);
-        timer.startTimer();
+        timer.setTimerListener(new Timer.TimerListener() {
+            @Override
+            public void onTimeFinished() {
+                // Chamada para a sua classe utilitária de Dialogs
+                // Usamos false porque o tempo acabou (derrota)
+                int corTema = ContextCompat.getColor(JogoNumeros.this, R.color.yellow);
+                GameResultDialog.mostrarModalFeedback(JogoNumeros.this, false, corTema);
+            }
+        });
 
+        timer.startTimer();
         SoundEffects.init(this);
         BackgroundMusics.start(this, R.raw.music2);
 
@@ -137,24 +149,8 @@ public class JogoNumeros extends AppCompatActivity {
                                 timer.getTime()
                         );
 
-                        AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                                .setPositiveButton("Voltar", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        finish();
-                                    }
-                                })
-                                .setOnDismissListener(new DialogInterface.OnDismissListener() {
-                                    @Override
-                                    public void onDismiss(DialogInterface dialog) {
-                                        finish();
-                                    }
-                                })
-                                .setTitle("Missão concluída!")
-                                .setMessage("Parabéns! Você completou o jogo.");
-
-                        AlertDialog dialog = builder.create();
-                        dialog.show();
+                        int corTema = ContextCompat.getColor(JogoNumeros.this, R.color.yellow);
+                        GameResultDialog.mostrarModalFeedback(this, true, corTema);
                     }
                 } else {
                     SoundEffects.tocarErro();

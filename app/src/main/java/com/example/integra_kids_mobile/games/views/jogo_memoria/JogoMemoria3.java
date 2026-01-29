@@ -9,8 +9,10 @@ import android.widget.GridLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.example.integra_kids_mobile.R;
+import com.example.integra_kids_mobile.common.GameResultDialog;
 import com.example.integra_kids_mobile.common.ReturnButton;
 import com.example.integra_kids_mobile.games.InfoJogos;
 import com.example.integra_kids_mobile.games.views.jogo_memoria.KeyView;
@@ -54,8 +56,17 @@ public class JogoMemoria3 extends AppCompatActivity {
         gridLayout = findViewById(R.id.memoria_grid);
         findViewById(R.id.timer).setOnClickListener(v -> {}); // apenas placeholder
         ((ViewGroup) findViewById(R.id.timer)).addView(timer);
-        timer.startTimer();
+        timer.setTimerListener(new Timer.TimerListener() {
+            @Override
+            public void onTimeFinished() {
+                // Chamada para a sua classe utilitária de Dialogs
+                // Usamos false porque o tempo acabou (derrota)
+                int corTema = ContextCompat.getColor(JogoMemoria3.this, R.color.red);
+                GameResultDialog.mostrarModalFeedback(JogoMemoria3.this, false, corTema);
+            }
+        });
 
+        timer.startTimer();
         carregarCartas();
         infoJogos.comecarJogo();
 
@@ -183,12 +194,8 @@ public class JogoMemoria3 extends AppCompatActivity {
         SoundEffects.tocarSucesso();
         registrarResultadoPartida();
 
-        new AlertDialog.Builder(this)
-                .setTitle("Missão concluída!")
-                .setMessage("Você completou o jogo!")
-                .setPositiveButton("OK", (DialogInterface d, int w) -> finish())
-                .show();
-    }
+        int corTema = ContextCompat.getColor(JogoMemoria3.this, R.color.red);
+        GameResultDialog.mostrarModalFeedback(this, true, corTema);    }
 
     private void registrarResultadoPartida() {
         new Thread(() -> {

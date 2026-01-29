@@ -1,7 +1,5 @@
 package com.example.integra_kids_mobile.games.views.jogo_memoria;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.ViewGroup;
@@ -9,11 +7,12 @@ import android.widget.GridLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.example.integra_kids_mobile.R;
+import com.example.integra_kids_mobile.common.GameResultDialog;
 import com.example.integra_kids_mobile.common.ReturnButton;
 import com.example.integra_kids_mobile.games.InfoJogos;
-import com.example.integra_kids_mobile.games.views.jogo_memoria.KeyView;
 import com.example.integra_kids_mobile.games.components.Timer;
 import com.example.integra_kids_mobile.API.GameService;
 import com.example.integra_kids_mobile.model.CardModel;
@@ -54,6 +53,16 @@ public class JogoMemoria extends AppCompatActivity {
         gridLayout = findViewById(R.id.memoria_grid);
         findViewById(R.id.timer).setOnClickListener(v -> {}); // apenas placeholder
         ((ViewGroup) findViewById(R.id.timer)).addView(timer);
+        timer.setTimerListener(new Timer.TimerListener() {
+            @Override
+            public void onTimeFinished() {
+                // Chamada para a sua classe utilitária de Dialogs
+                // Usamos false porque o tempo acabou (derrota)
+                int corTema = ContextCompat.getColor(JogoMemoria.this, R.color.red);
+                GameResultDialog.mostrarModalFeedback(JogoMemoria.this, false, corTema);
+            }
+        });
+
         timer.startTimer();
 
         carregarCartas();
@@ -183,11 +192,8 @@ public class JogoMemoria extends AppCompatActivity {
         SoundEffects.tocarSucesso();
         registrarResultadoPartida();
 
-        new AlertDialog.Builder(this)
-                .setTitle("Missão concluída!")
-                .setMessage("Você completou o jogo!")
-                .setPositiveButton("OK", (DialogInterface d, int w) -> finish())
-                .show();
+        int corTema = ContextCompat.getColor(JogoMemoria.this, R.color.red);
+        GameResultDialog.mostrarModalFeedback(this, true, corTema);
     }
 
     private void registrarResultadoPartida() {

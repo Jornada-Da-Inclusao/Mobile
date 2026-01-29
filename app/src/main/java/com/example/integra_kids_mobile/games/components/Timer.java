@@ -20,6 +20,17 @@ public class Timer extends androidx.appcompat.widget.AppCompatTextView {
         init();
     }
 
+    public interface TimerListener {
+        void onTimeFinished();
+    }
+
+    private TimerListener listener;
+
+    // 2. Método para a Activity se "inscrever" no aviso
+    public void setTimerListener(TimerListener listener) {
+        this.listener = listener;
+    }
+
     public void startTimer() {
         startedAt = System.currentTimeMillis();
         handler.post(updateTimer);
@@ -32,6 +43,10 @@ public class Timer extends androidx.appcompat.widget.AppCompatTextView {
     public int getTime() {
         long now = System.currentTimeMillis();
         return (int) ((now - startedAt) / 1000);  // segundos reais
+    }
+    public void setInitialTime(int millis) {
+        this.time = millis;
+        setTimerText(formatTimerString());
     }
 
     // ---------- RESTO DO SEU CÓDIGO IGUAL ----------
@@ -66,6 +81,11 @@ public class Timer extends androidx.appcompat.widget.AppCompatTextView {
     private final Runnable updateTimer = new Runnable() {
         public void run() {
             if (time <= 0) {
+                // 3. Quando o tempo zerar, avisa quem estiver ouvindo
+                if (listener != null) {
+                    listener.onTimeFinished();
+                }
+                stopTimer(); // Garante que pare o postDelayed
                 return;
             }
 

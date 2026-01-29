@@ -17,12 +17,15 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.example.integra_kids_mobile.API.GameService;
 import com.example.integra_kids_mobile.R;
+import com.example.integra_kids_mobile.common.GameResultDialog;
 import com.example.integra_kids_mobile.common.ReturnButton;
 import com.example.integra_kids_mobile.games.components.Timer;
 import com.example.integra_kids_mobile.games.InfoJogos;
+import com.example.integra_kids_mobile.games.views.jogo_memoria.JogoMemoria;
 import com.example.integra_kids_mobile.music.BackgroundMusics;
 import com.example.integra_kids_mobile.music.SoundEffects;
 
@@ -56,8 +59,17 @@ public class JogoVogais extends AppCompatActivity {
         Timer timer = new Timer(this);
         FrameLayout rootLayout = findViewById(R.id.timer);
         rootLayout.addView(timer);
-        timer.startTimer();
+        timer.setTimerListener(new Timer.TimerListener() {
+            @Override
+            public void onTimeFinished() {
+                // Chamada para a sua classe utilitária de Dialogs
+                // Usamos false porque o tempo acabou (derrota)
+                int corTema = ContextCompat.getColor(JogoVogais.this, R.color.blue);
+                GameResultDialog.mostrarModalFeedback(JogoVogais.this, false, corTema);
+            }
+        });
 
+        timer.startTimer();
         final GridLayout gridLayout = findViewById(R.id.vogais_grid);
 
         // ========== CRIAÇÃO DAS LETRAS ==========
@@ -159,13 +171,8 @@ public class JogoVogais extends AppCompatActivity {
                             timer.getTime()
                     );
 
-                    new AlertDialog.Builder(this)
-                            .setPositiveButton("Voltar", (d, w) -> finish())
-                            .setOnDismissListener(d -> finish())
-                            .setTitle("Missão concluída!")
-                            .setMessage("Parabéns! Você completou o jogo.")
-                            .create()
-                            .show();
+                    int corTema = ContextCompat.getColor(JogoVogais.this, R.color.blue);
+                    GameResultDialog.mostrarModalFeedback(this, true, corTema);
                 }
 
             } else {
