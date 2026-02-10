@@ -1,31 +1,39 @@
-name: Android CI
+name: Gerar APK Manual
 
 on:
-  push:
-    branches: [ "main-androidStudio" ]
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'Confirmação de build manual'
+        default: 'Gerando APK da branch main-androidStudio'
+        required: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout do Código
+      uses: actions/checkout@v4
+      with:
+        ref: main-androidStudio
 
-    - name: set up JDK 17
+    - name: Configurar JDK 17
       uses: actions/setup-java@v4
       with:
         java-version: '17'
         distribution: 'temurin'
         cache: gradle
 
-    - name: Grant execute permission for gradlew
+    - name: Permissão para o Gradlew
       run: chmod +x gradlew
 
-    - name: Build with Gradle
-      run: ./gradlew assembleRelease
+    - name: Compilar APK (Debug)
+      run: ./gradlew assembleDebug --no-daemon --build-cache
 
-    - name: Upload APK
+    - name: Disponibilizar APK para Download
       uses: actions/upload-artifact@v4
       with:
-        name: app-debug
-        path: app/build/outputs/apk/debug/app-debug.apk
+        name: APK-TCC-AndroidStudio
+        path: app/build/outputs/apk/debug/*.apk
+        retention-days: 7
