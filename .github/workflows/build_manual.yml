@@ -1,32 +1,31 @@
-name: Gerar APK Manual
+name: Android CI
 
 on:
-  workflow_dispatch:
+  push:
+    branches: [ "main-androidStudio" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          ref: main-androidStudio
+    - uses: actions/checkout@v4
 
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: gradle
+    - name: set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: gradle
 
-      - name: Permission
-        run: chmod +x gradlew
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
 
-      - name: Build
-        run: ./gradlew assembleDebug --no-daemon
+    - name: Build with Gradle
+      run: ./gradlew assembleRelease
 
-      - name: Upload
-        uses: actions/upload-artifact@v4
-        with:
-          name: APK-TCC
-          path: app/build/outputs/apk/debug/*.apk
+    - name: Upload APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: app-debug
+        path: app/build/outputs/apk/debug/app-debug.apk
