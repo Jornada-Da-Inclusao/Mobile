@@ -13,10 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Integrakidsmobile">
-        <activity
-            android:name=".ui.chatbot.ChatbotFront"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false" />
+
         <activity
             android:name=".games.views.jogo_numeros.JogoNumeros3"
             android:exported="false" />
