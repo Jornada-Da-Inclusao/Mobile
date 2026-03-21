@@ -7,14 +7,19 @@
         android:title="@string/title_games" />
 
     <item
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/navigation_profile"
         android:icon="@drawable/profile"
         android:title="@string/title_profile" />
 
     <item
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_about"
         android:icon="@drawable/about"
         android:title="@string/title_about" />
+
+    <item
+        android:id="@+id/navigation_chatbot"
+        android:icon="@drawable/chatbot_ik"
+        android:title="@string/title_chatbot" />
 
     <item
         android:id="@+id/usuarioConfig"

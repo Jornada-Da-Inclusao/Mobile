@@ -12,16 +12,23 @@
         tools:layout="@layout/jogos" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/navigation_profile"
         android:name="com.example.integra_kids_mobile.ui.perfil.Perfil"
         android:label="@string/title_profile"
         tools:layout="@layout/perfil" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_about"
         android:name="com.example.integra_kids_mobile.ui.sobre.Sobre"
         android:label="@string/title_about"
         tools:layout="@layout/sobre" />
+
+    <fragment
+        android:id="@+id/navigation_chatbot"
+        android:name="com.example.integra_kids_mobile.ui.chatbot.ChatbotFront"
+        android:label="@string/title_chatbot"
+        tools:layout="@layout/sobre" />
+
     <fragment
         android:id="@+id/usuarioConfig"
         android:name="com.example.integra_kids_mobile.UsuarioConfig"

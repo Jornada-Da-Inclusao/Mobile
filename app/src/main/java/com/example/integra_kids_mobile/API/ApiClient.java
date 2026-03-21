@@ -4,14 +4,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.example.integra_kids_mobile.BuildConfig;
+
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-
 public class ApiClient {
-
     private static final OkHttpClient client = new OkHttpClient();
     private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     private static final String BASE_URL = Api.BASE_URL;
@@ -33,8 +33,10 @@ public class ApiClient {
 
         String token = getToken(context);
 
-        Log.d("API_DEBUG", "GET -> URL: " + fullUrl(endpoint));
-        Log.d("API_DEBUG", "Headers: Authorization=" + token);
+        if (BuildConfig.DEBUG) {
+            Log.d("API_DEBUG", "GET -> URL: " + fullUrl(endpoint));
+            Log.d("API_DEBUG", "Headers: Authorization=" + token);
+        }
 
         Request.Builder builder = new Request.Builder()
                 .url(fullUrl(endpoint))
@@ -48,8 +50,10 @@ public class ApiClient {
         Request request = builder.build();
         Response response = client.newCall(request).execute();
 
-        Log.d("API_DEBUG", "Response Code: " + response.code());
-        Log.d("API_DEBUG", "Response Body: " + response.peekBody(Long.MAX_VALUE).string());
+        if (BuildConfig.DEBUG) {
+            Log.d("API_DEBUG", "Response Code: " + response.code());
+            Log.d("API_DEBUG", "Response Body: " + response.peekBody(Long.MAX_VALUE).string());
+        }
 
         return response;
     }
@@ -61,11 +65,11 @@ public class ApiClient {
     public static Response post(Context context, String endpoint, String jsonBody) throws Exception {
 
         String token = getToken(context);
-
-        Log.d("API_DEBUG", "POST -> URL: " + fullUrl(endpoint));
-        Log.d("API_DEBUG", "Body: " + jsonBody);
-        Log.d("API_DEBUG", "Headers: Authorization=" + token);
-
+        if (BuildConfig.DEBUG) {
+            Log.d("API_DEBUG", "POST -> URL: " + fullUrl(endpoint));
+            Log.d("API_DEBUG", "Body: " + jsonBody);
+            Log.d("API_DEBUG", "Headers: Authorization=" + token);
+        }
         RequestBody body = RequestBody.create(jsonBody, JSON);
 
         Request.Builder builder = new Request.Builder()
@@ -81,8 +85,10 @@ public class ApiClient {
         Request request = builder.build();
         Response response = client.newCall(request).execute();
 
-        Log.d("API_DEBUG", "Response Code: " + response.code());
-        Log.d("API_DEBUG", "Response Body: " + response.peekBody(Long.MAX_VALUE).string());
+        if (BuildConfig.DEBUG) {
+            Log.d("API_DEBUG", "Response Code: " + response.code());
+            Log.d("API_DEBUG", "Response Body: " + response.peekBody(Long.MAX_VALUE).string());
+        }
 
         return response;
     }
@@ -90,8 +96,10 @@ public class ApiClient {
 
     public static Response postNoAuth(String url, String jsonBody) throws Exception {
 
-        Log.d("API_DEBUG", "POST (NO AUTH) -> URL: " + url);
-        Log.d("API_DEBUG", "Body: " + jsonBody);
+        if (BuildConfig.DEBUG) {
+            Log.d("API_DEBUG", "POST (NO AUTH) -> URL: " + url);
+            Log.d("API_DEBUG", "Body: " + jsonBody);
+        }
 
         RequestBody body = RequestBody.create(jsonBody, JSON);
 
@@ -103,8 +111,10 @@ public class ApiClient {
 
         Response response = client.newCall(request).execute();
 
-        Log.d("API_DEBUG", "Response Code: " + response.code());
-        Log.d("API_DEBUG", "Response Body: " + response.peekBody(Long.MAX_VALUE).string());
+        if (BuildConfig.DEBUG) {
+            Log.d("API_DEBUG", "Response Code: " + response.code());
+            Log.d("API_DEBUG", "Response Body: " + response.peekBody(Long.MAX_VALUE).string());
+        }
 
         return response;
     }
@@ -116,9 +126,11 @@ public class ApiClient {
 
         String token = getToken(context);
 
-        Log.d("API_DEBUG", "PUT -> URL: " + fullUrl(endpoint));
-        Log.d("API_DEBUG", "Body: " + jsonBody);
-        Log.d("API_DEBUG", "Headers: Authorization=" + token);
+        if (BuildConfig.DEBUG) {
+            Log.d("API_DEBUG", "PUT -> URL: " + fullUrl(endpoint));
+            Log.d("API_DEBUG", "Body: " + jsonBody);
+            Log.d("API_DEBUG", "Headers: Authorization=" + token);
+        }
 
         RequestBody body = RequestBody.create(jsonBody, JSON);
 
@@ -131,8 +143,10 @@ public class ApiClient {
 
         Response response = client.newCall(request).execute();
 
-        Log.d("API_DEBUG", "Response Code: " + response.code());
-        Log.d("API_DEBUG", "Response Body: " + response.peekBody(Long.MAX_VALUE).string());
+        if (BuildConfig.DEBUG) {
+            Log.d("API_DEBUG", "Response Code: " + response.code());
+            Log.d("API_DEBUG", "Response Body: " + response.peekBody(Long.MAX_VALUE).string());
+        }
 
         return response;
     }
@@ -144,9 +158,11 @@ public class ApiClient {
 
         String token = getToken(context);
 
-        Log.d("API_DEBUG", "PATCH -> URL: " + fullUrl(endpoint));
-        Log.d("API_DEBUG", "Body: " + jsonBody);
-        Log.d("API_DEBUG", "Headers: Authorization=" + token);
+        if (BuildConfig.DEBUG) {
+            Log.d("API_DEBUG", "PATCH -> URL: " + fullUrl(endpoint));
+            Log.d("API_DEBUG", "Body: " + jsonBody);
+            Log.d("API_DEBUG", "Headers: Authorization=" + token);
+        }
 
         RequestBody body = RequestBody.create(jsonBody, JSON);
 
@@ -159,8 +175,10 @@ public class ApiClient {
 
         Response response = client.newCall(request).execute();
 
-        Log.d("API_DEBUG", "Response Code: " + response.code());
-        Log.d("API_DEBUG", "Response Body: " + response.peekBody(Long.MAX_VALUE).string());
+        if (BuildConfig.DEBUG) {
+            Log.d("API_DEBUG", "Response Code: " + response.code());
+            Log.d("API_DEBUG", "Response Body: " + response.peekBody(Long.MAX_VALUE).string());
+        }
 
         return response;
     }
@@ -172,8 +190,10 @@ public class ApiClient {
 
         String token = getToken(context);
 
-        Log.d("API_DEBUG", "DELETE -> URL: " + fullUrl(endpoint));
-        Log.d("API_DEBUG", "Headers: Authorization=" + token);
+        if (BuildConfig.DEBUG) {
+            Log.d("API_DEBUG", "DELETE -> URL: " + fullUrl(endpoint));
+            Log.d("API_DEBUG", "Headers: Authorization=" + token);
+        }
 
         Request request = new Request.Builder()
                 .url(fullUrl(endpoint))
@@ -184,8 +204,10 @@ public class ApiClient {
 
         Response response = client.newCall(request).execute();
 
-        Log.d("API_DEBUG", "Response Code: " + response.code());
-        Log.d("API_DEBUG", "Response Body: " + response.peekBody(Long.MAX_VALUE).string());
+        if (BuildConfig.DEBUG) {
+            Log.d("API_DEBUG", "Response Code: " + response.code());
+            Log.d("API_DEBUG", "Response Body: " + response.peekBody(Long.MAX_VALUE).string());
+        }
 
         return response;
     }

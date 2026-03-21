@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.integra_kids_mobile.API.DependenteService;
+import com.example.integra_kids_mobile.BuildConfig;
 import com.example.integra_kids_mobile.R;
 import com.example.integra_kids_mobile.adapter.HistoricoAdapter;
 import com.example.integra_kids_mobile.common.ReturnButton;
@@ -209,20 +210,24 @@ public class PerfilResultados extends AppCompatActivity {
                 Map<String, Float> totalTempo = new HashMap<>();
 
                 for (Partida p : lista) {
-                    Log.d("PerfilResultados", "Partida recebida -> ID: " + p.getId() +
-                            ", Nome: " + p.getNomeJogo() +
-                            ", Acertos: " + p.getAcertos() +
-                            ", Erros: " + p.getErros() +
-                            ", Tempo: " + p.getTempoTotal());
+                    if (BuildConfig.DEBUG) {
+                        Log.d("PerfilResultados", "Partida recebida -> ID: " + p.getId() +
+                                ", Nome: " + p.getNomeJogo() +
+                                ", Acertos: " + p.getAcertos() +
+                                ", Erros: " + p.getErros() +
+                                ", Tempo: " + p.getTempoTotal());
+                    }
                     String nome = p.getNomeJogo(); // já corrigido acima
                     totalAcertos.put(nome, totalAcertos.getOrDefault(nome, 0) + p.getAcertos());
                     totalErros.put(nome, totalErros.getOrDefault(nome, 0) + p.getErros());
                     totalTempo.put(nome, totalTempo.getOrDefault(nome, 0f) + (float)p.getTempoTotal());
 
-                    Log.d("PerfilResultados", "Mapa atualizado -> Nome: " + nome +
-                            ", Acertos: " + totalAcertos.get(nome) +
-                            ", Erros: " + totalErros.get(nome) +
-                            ", Tempo: " + totalTempo.get(nome));
+                    if (BuildConfig.DEBUG) {
+                        Log.d("PerfilResultados", "Mapa atualizado -> Nome: " + nome +
+                                ", Acertos: " + totalAcertos.get(nome) +
+                                ", Erros: " + totalErros.get(nome) +
+                                ", Tempo: " + totalTempo.get(nome));
+                    }
                 }
 
 

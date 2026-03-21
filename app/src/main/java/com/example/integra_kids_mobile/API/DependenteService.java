@@ -7,6 +7,7 @@ import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.integra_kids_mobile.BuildConfig;
 import com.example.integra_kids_mobile.model.Partida;
 import com.google.gson.Gson;
 
@@ -50,34 +51,36 @@ public class DependenteService {
     // 🔹 Buscar dependentes de um usuário
     public static List<JSONObject> getDependentesByUsuario(Context context, int userId) throws Exception {
 
-        Log.d("DEPENDENTE_DEBUG", "Iniciando getDependentesByUsuario()");
-        Log.d("DEPENDENTE_DEBUG", "UserID recebido: " + userId);
+        if (BuildConfig.DEBUG) {
+            Log.d("DEPENDENTE_DEBUG", "Iniciando getDependentesByUsuario()");
+            Log.d("DEPENDENTE_DEBUG", "UserID recebido: " + userId);
+        }
 
         Response response = ApiClient.get(context, "/dependente/getDependenteByIdUsuario/" + userId);
 
-        Log.d("DEPENDENTE_DEBUG", "Response recebido. Status: " + response.code());
+        if (BuildConfig.DEBUG) {Log.d("DEPENDENTE_DEBUG", "Response recebido. Status: " + response.code());}
 
         String body = null;
         try {
             body = response.body().string();
-            Log.d("DEPENDENTE_DEBUG", "Body bruto: " + body);
+            if (BuildConfig.DEBUG) {Log.d("DEPENDENTE_DEBUG", "Body bruto: " + body);}
         } catch (Exception e) {
-            Log.e("DEPENDENTE_DEBUG", "Erro ao ler body da resposta", e);
+            if (BuildConfig.DEBUG) {Log.e("DEPENDENTE_DEBUG", "Erro ao ler body da resposta", e);}
             throw e;
         }
 
         // Verificação extra — evita crash caso o backend retorne null / vazio / HTML de erro
         if (body == null || body.trim().isEmpty()) {
-            Log.e("DEPENDENTE_DEBUG", "Body vazio ou null! Retornando lista vazia.");
+            if (BuildConfig.DEBUG) {Log.e("DEPENDENTE_DEBUG", "Body vazio ou null! Retornando lista vazia.");}
             return new ArrayList<>();
         }
 
         JSONArray array;
         try {
             array = new JSONArray(body);
-            Log.d("DEPENDENTE_DEBUG", "JSONArray criado. Tamanho: " + array.length());
+            if (BuildConfig.DEBUG) {Log.d("DEPENDENTE_DEBUG", "JSONArray criado. Tamanho: " + array.length());}
         } catch (Exception e) {
-            Log.e("DEPENDENTE_DEBUG", "ERRO ao converter resposta para JSONArray!", e);
+            if (BuildConfig.DEBUG) {Log.e("DEPENDENTE_DEBUG", "ERRO ao converter resposta para JSONArray!", e);}
             throw e;
         }
 
@@ -86,14 +89,14 @@ public class DependenteService {
         for (int i = 0; i < array.length(); i++) {
             try {
                 JSONObject obj = array.getJSONObject(i);
-                Log.d("DEPENDENTE_DEBUG", "Dependente carregado: " + obj.toString());
+                if (BuildConfig.DEBUG) {Log.d("DEPENDENTE_DEBUG", "Dependente carregado: " + obj.toString());}
                 result.add(obj);
             } catch (Exception e) {
-                Log.e("DEPENDENTE_DEBUG", "Erro ao ler item [" + i + "] do JSONArray", e);
+                if (BuildConfig.DEBUG) {Log.e("DEPENDENTE_DEBUG", "Erro ao ler item [" + i + "] do JSONArray", e);}
             }
         }
 
-        Log.d("DEPENDENTE_DEBUG", "Finalizado. Total de dependentes: " + result.size());
+        if (BuildConfig.DEBUG) {Log.d("DEPENDENTE_DEBUG", "Finalizado. Total de dependentes: " + result.size());}
 
         return result;
     }
@@ -115,7 +118,7 @@ public class DependenteService {
         usuario.put("id", usuarioId);
         dep.put("usuario_id_fk", usuario);
 
-        Log.d("API_DEBUG", "Enviando JSON: " + dep.toString());
+        if (BuildConfig.DEBUG) {Log.d("API_DEBUG", "Enviando JSON: " + dep.toString());}
 
         Response response = ApiClient.post(context, BASE, dep.toString());
         String resp = response.body().string();

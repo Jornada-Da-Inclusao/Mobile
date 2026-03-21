@@ -62,7 +62,7 @@ public class JogoMemoria extends AppCompatActivity {
                 GameResultDialog.mostrarModalFeedback(JogoMemoria.this, false, corTema);
             }
         });
-
+        // timer.setInitialTime(5_000); // só usar para fazer a fase falhar mais rápido
         timer.startTimer();
 
         carregarCartas();

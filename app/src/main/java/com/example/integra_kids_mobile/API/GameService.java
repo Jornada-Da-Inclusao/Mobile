@@ -3,6 +3,8 @@ package com.example.integra_kids_mobile.API;
 import android.content.Context;
 import android.util.Log;
 
+import com.example.integra_kids_mobile.BuildConfig;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -87,7 +89,7 @@ public class GameService {
         body.put("erros", erros);
         body.put("tempoTotal", tempo);
 
-        Log.d("JSON_ENVIADO", body.toString());
+        if (BuildConfig.DEBUG) {Log.d("JSON_ENVIADO", body.toString());}
 
         Response response = ApiClient.post(context, BASE_INFO, body.toString());
         return new JSONObject(response.body().string());

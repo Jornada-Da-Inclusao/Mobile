@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.integra_kids_mobile.BuildConfig;
 import com.example.integra_kids_mobile.R;
 import com.example.integra_kids_mobile.adapter.JogadorAdapter;
 import com.example.integra_kids_mobile.common.ReturnButton;
@@ -82,26 +83,26 @@ public class PerfilTrocarPlayer extends AppCompatActivity implements JogadorAdap
         int userId = getSharedPreferences("AuthPrefs", MODE_PRIVATE)
                 .getInt("user_id", -1);
         if (userId == -1) {
-            Log.d("PERFIL_TROCAR", "User ID não encontrado nos SharedPreferences!");
+            if (BuildConfig.DEBUG) {Log.d("PERFIL_TROCAR", "User ID não encontrado nos SharedPreferences!");}
             return;
         }
 
-        Log.d("PERFIL_TROCAR", "Iniciando carregamento de dependentes para userId: " + userId);
+        if (BuildConfig.DEBUG) {Log.d("PERFIL_TROCAR", "Iniciando carregamento de dependentes para userId: " + userId);}
 
         new Thread(() -> {
             List<JSONObject> dependentes = null;
             try {
                 dependentes = DependenteService.getDependentesByUsuario(PerfilTrocarPlayer.this, userId);
             } catch (Exception e) {
-                Log.d("PERFIL_TROCAR", "Erro ao chamar DependenteService", e);
+                if (BuildConfig.DEBUG) {Log.d("PERFIL_TROCAR", "Erro ao chamar DependenteService", e);}
             }
 
             if (dependentes == null) {
-                Log.d("PERFIL_TROCAR", "Lista de dependentes retornou null");
+                if (BuildConfig.DEBUG) {Log.d("PERFIL_TROCAR", "Lista de dependentes retornou null");}
                 return;
             }
 
-            Log.d("PERFIL_TROCAR", "Dependentes recebidos do serviço: " + dependentes.size());
+            if (BuildConfig.DEBUG) {Log.d("PERFIL_TROCAR", "Dependentes recebidos do serviço: " + dependentes.size());}
 
             listaJogadores.clear();
             for (int i = 0; i < dependentes.size(); i++) {
@@ -112,11 +113,11 @@ public class PerfilTrocarPlayer extends AppCompatActivity implements JogadorAdap
                     String fotoUrl = dep.optString("foto", null); // pega o campo foto, se existir
                     int icone = com.example.integra_kids_mobile.utils.AvatarMapper.getAvatarResource(fotoUrl);
 
-                    Log.d("PERFIL_TROCAR", "Dependente " + i + ": ID=" + id + ", Nome=" + nome + ", Foto=" + fotoUrl);
+                    if (BuildConfig.DEBUG) {Log.d("PERFIL_TROCAR", "Dependente " + i + ": ID=" + id + ", Nome=" + nome + ", Foto=" + fotoUrl);}
 
                     listaJogadores.add(new Jogador(id, nome, icone));
                 } catch (Exception e) {
-                    Log.d("PERFIL_TROCAR", "Erro ao ler dependente " + i, e);
+                    if (BuildConfig.DEBUG) {Log.d("PERFIL_TROCAR", "Erro ao ler dependente " + i, e);}
                 }
             }
 
@@ -124,9 +125,9 @@ public class PerfilTrocarPlayer extends AppCompatActivity implements JogadorAdap
             runOnUiThread(() -> {
                 if (jogadorAdapter != null) {
                     jogadorAdapter.notifyDataSetChanged();
-                    Log.d("PERFIL_TROCAR", "Adapter notificado. ListaJogadores tamanho: " + listaJogadores.size());
+                    if (BuildConfig.DEBUG) {Log.d("PERFIL_TROCAR", "Adapter notificado. ListaJogadores tamanho: " + listaJogadores.size());}
                 } else {
-                    Log.d("PERFIL_TROCAR", "Adapter ainda é null!");
+                    if (BuildConfig.DEBUG) {Log.d("PERFIL_TROCAR", "Adapter ainda é null!");}
                 }
             });
         }).start();
@@ -137,7 +138,7 @@ public class PerfilTrocarPlayer extends AppCompatActivity implements JogadorAdap
     @Override
     public void onJogadorClick(Jogador jogador) {
         // 🔹 Log para ver qual jogador foi escolhido
-        Log.e("PERFIL_TROCAR", "Jogador selecionado: ID=" + jogador.getId() + ", Nome=" + jogador.getNome());
+        if (BuildConfig.DEBUG) {Log.e("PERFIL_TROCAR", "Jogador selecionado: ID=" + jogador.getId() + ", Nome=" + jogador.getNome());}
 
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(KEY_SELECTED_PLAYER_ID, jogador.getId());

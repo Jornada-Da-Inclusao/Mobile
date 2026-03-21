@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.integra_kids_mobile.API.UsuarioService;
+import com.example.integra_kids_mobile.BuildConfig;
 import com.example.integra_kids_mobile.LoginCadastro;
 import com.example.integra_kids_mobile.R;
 import com.example.integra_kids_mobile.common.ReturnButton;
@@ -92,7 +93,7 @@ public class PerfilEditCad extends AppCompatActivity {
         inputNome.setText(prefs.getString(KEY_NOME, ""));
         inputEmail.setText(prefs.getString(KEY_EMAIL, ""));
 
-        Log.d("DEBUG_USER", "ID: " + userId + " | Token: " + token);
+        if (BuildConfig.DEBUG) {Log.d("DEBUG_USER", "ID: " + userId + " | Token: " + token);}
     }
 
     private void saveUserDataLocal(JSONObject json) {
@@ -132,7 +133,7 @@ public class PerfilEditCad extends AppCompatActivity {
                         jsonBody
                 );
 
-                Log.d("DEBUG_PATCH_RESP", resp.toString());
+                if (BuildConfig.DEBUG) {Log.d("DEBUG_PATCH_RESP", resp.toString());}
                 saveUserDataLocal(resp);
 
                 runOnUiThread(() -> {

@@ -26,6 +26,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.integra_kids_mobile.API.DependenteService;
+import com.example.integra_kids_mobile.BuildConfig;
 import com.example.integra_kids_mobile.R;
 import com.example.integra_kids_mobile.common.ReturnButton;
 import com.example.integra_kids_mobile.utils.AvatarMapper;
@@ -187,32 +188,33 @@ public class PerfilEditKid extends AppCompatActivity {
 
     private void abrirDialogDependentes() {
 
-        Log.d("KID_DEBUG", "========== abrirDialogDependentes() ==========");
+        if (BuildConfig.DEBUG) {Log.d("KID_DEBUG", "========== abrirDialogDependentes() ==========");}
 
         new Thread(() -> {
             try {
-                Log.d("KID_DEBUG", "Thread iniciada...");
-
-                Log.d("KID_DEBUG", "Lendo user_id do SharedPreferences...");
+                if (BuildConfig.DEBUG) {
+                    Log.d("KID_DEBUG", "Thread iniciada...");
+                    Log.d("KID_DEBUG", "Lendo user_id do SharedPreferences...");
+                }
 
                 int userId = PerfilEditKid.this
                         .getSharedPreferences("AuthPrefs", MODE_PRIVATE)
                         .getInt("user_id", -1);
 
-                Log.d("KID_DEBUG", "user_id lido: " + userId);
+                if (BuildConfig.DEBUG) {Log.d("KID_DEBUG", "user_id lido: " + userId);}
 
 
-                Log.d("KID_DEBUG", "Chamando DependenteService.getDependentesByUsuario...");
+                if (BuildConfig.DEBUG) {Log.d("KID_DEBUG", "Chamando DependenteService.getDependentesByUsuario...");}
                 List<JSONObject> dependentes = DependenteService.getDependentesByUsuario(PerfilEditKid.this, userId);
 
-                Log.d("KID_DEBUG", "Resposta recebida! Quantidade: " + dependentes.size());
+                if (BuildConfig.DEBUG) {Log.d("KID_DEBUG", "Resposta recebida! Quantidade: " + dependentes.size());}
 
                 for (JSONObject d : dependentes) {
-                    Log.d("KID_DEBUG", "Dependente JSON: " + d.toString());
+                    if (BuildConfig.DEBUG) {Log.d("KID_DEBUG", "Dependente JSON: " + d.toString());}
                 }
 
                 runOnUiThread(() -> {
-                    Log.d("KID_DEBUG", "Entrou no runOnUiThread para montar o dialog...");
+                    if (BuildConfig.DEBUG) {Log.d("KID_DEBUG", "Entrou no runOnUiThread para montar o dialog...");}
 
                     View dialogView = getLayoutInflater().inflate(R.layout.dialog_dependente, null);
                     ListView listView = dialogView.findViewById(R.id.listDependentes);
@@ -222,7 +224,7 @@ public class PerfilEditKid extends AppCompatActivity {
                         nomes.add(d.optString("nome"));
                     }
 
-                    Log.d("KID_DEBUG", "Lista de nomes: " + nomes);
+                    if (BuildConfig.DEBUG) {Log.d("KID_DEBUG", "Lista de nomes: " + nomes);}
 
                     ArrayAdapter<String> adapter = new ArrayAdapter<>(
                             PerfilEditKid.this,
@@ -238,11 +240,11 @@ public class PerfilEditKid extends AppCompatActivity {
                             .create();
 
                     listView.setOnItemClickListener((parent, view, position, id) -> {
-                        Log.d("KID_DEBUG", "Clicou no dependente index=" + position);
+                        if (BuildConfig.DEBUG) {Log.d("KID_DEBUG", "Clicou no dependente index=" + position);}
 
                         try {
                             JSONObject escolhido = dependentes.get(position);
-                            Log.d("KID_DEBUG", "Dependente escolhido: " + escolhido.toString());
+                            if (BuildConfig.DEBUG) {Log.d("KID_DEBUG", "Dependente escolhido: " + escolhido.toString());}
 
                             preencherCamposDependente(escolhido);
 
@@ -250,7 +252,7 @@ public class PerfilEditKid extends AppCompatActivity {
                             btnSelectedPlayer.setText("Trocar criança");
 
                         } catch (Exception e) {
-                            Log.e("KID_DEBUG", "Erro ao preencher dependente", e);
+                            if (BuildConfig.DEBUG) {Log.e("KID_DEBUG", "Erro ao preencher dependente", e);}
                         }
 
                         dialog.dismiss();
@@ -260,7 +262,7 @@ public class PerfilEditKid extends AppCompatActivity {
                 });
 
             } catch (Exception e) {
-                Log.e("KID_DEBUG", "ERRO NO PROCESSO:", e);
+                if (BuildConfig.DEBUG) {Log.e("KID_DEBUG", "ERRO NO PROCESSO:", e);}
                 runOnUiThread(() ->
                         Toast.makeText(PerfilEditKid.this, "Erro ao carregar dependentes", Toast.LENGTH_SHORT).show()
                 );
@@ -314,8 +316,4 @@ public class PerfilEditKid extends AppCompatActivity {
             }
         }
     }
-
-
-
-
 }

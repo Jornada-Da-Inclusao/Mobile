@@ -26,7 +26,7 @@ public class Timer extends androidx.appcompat.widget.AppCompatTextView {
 
     private TimerListener listener;
 
-    // 2. Método para a Activity se "inscrever" no aviso
+    // Método para a Activity se "inscrever" no aviso
     public void setTimerListener(TimerListener listener) {
         this.listener = listener;
     }
@@ -49,7 +49,6 @@ public class Timer extends androidx.appcompat.widget.AppCompatTextView {
         setTimerText(formatTimerString());
     }
 
-    // ---------- RESTO DO SEU CÓDIGO IGUAL ----------
     private void init() {
         this.setTextColor(Color.WHITE);
         this.setTextSize(18);
@@ -81,7 +80,7 @@ public class Timer extends androidx.appcompat.widget.AppCompatTextView {
     private final Runnable updateTimer = new Runnable() {
         public void run() {
             if (time <= 0) {
-                // 3. Quando o tempo zerar, avisa quem estiver ouvindo
+                // Quando o tempo zerar, avisa quem estiver ouvindo
                 if (listener != null) {
                     listener.onTimeFinished();
                 }

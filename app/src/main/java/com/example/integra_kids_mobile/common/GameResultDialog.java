@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.integra_kids_mobile.R;
+import com.example.integra_kids_mobile.music.BackgroundMusics;
+import com.example.integra_kids_mobile.music.SoundEffects;
 import com.example.integra_kids_mobile.profile.PerfilResultados;
 
 public class GameResultDialog {
@@ -34,9 +36,13 @@ public class GameResultDialog {
             btnRepetir.setBackgroundTintList(android.content.res.ColorStateList.valueOf(corTema));
 
             if (sucesso) {
+                BackgroundMusics.stop();
+                SoundEffects.tocarSucesso();
                 tvMensagem.setText("Incrível! Você conseguiu!");
                 imgStatus.setImageResource(R.drawable.icon_sucess);
             } else {
+                BackgroundMusics.stop();
+                SoundEffects.tocarFalha();
                 tvMensagem.setText("Quase lá! Tente de novo!");
                 imgStatus.setImageResource(R.drawable.icon_failed);
             }
@@ -49,6 +55,7 @@ public class GameResultDialog {
             btnResultados.setOnClickListener(v -> {
                 dialog.dismiss();
                 activity.startActivity(new Intent(activity, PerfilResultados.class));
+                activity.finish();
             });
 
             btnMenu.setOnClickListener(v -> {
