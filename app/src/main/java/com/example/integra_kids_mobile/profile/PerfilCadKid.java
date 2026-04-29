@@ -23,9 +23,8 @@ import java.util.Calendar;
 
 public class PerfilCadKid extends AppCompatActivity {
 
-    private int selectedAvatarDrawable = -1; // drawable do avatar selecionado
+    private int selectedAvatarDrawable = -1;
 
-    // Array com TODOS os drawables dos avatars (ordem dos botões do XML)
     private final int[] avatarDrawables = {
             R.drawable.player_icon1,
             R.drawable.player_icon2,
@@ -65,7 +64,6 @@ public class PerfilCadKid extends AppCompatActivity {
                     year, month, day
             );
 
-            // faixa permitida 3–10 anos
             Calendar maxDate = Calendar.getInstance();
             maxDate.add(Calendar.YEAR, -3);
 
@@ -83,32 +81,21 @@ public class PerfilCadKid extends AppCompatActivity {
         GridLayout gridAvatares = findViewById(R.id.gridAvatares);
 
         for (int i = 0; i < gridAvatares.getChildCount(); i++) {
-
             View child = gridAvatares.getChildAt(i);
 
             if (child instanceof ImageButton) {
-
                 ImageButton avatarButton = (ImageButton) child;
-
-                // Salva dinamicamente o drawable correspondente baseado na posição
                 avatarButton.setTag(avatarDrawables[i]);
-
                 int index = i;
 
                 avatarButton.setOnClickListener(v -> {
-
-                    // limpa seleção antiga
                     for (int j = 0; j < gridAvatares.getChildCount(); j++) {
                         View other = gridAvatares.getChildAt(j);
                         if (other instanceof ImageButton) {
                             other.setBackground(null);
                         }
                     }
-
-                    // marca selecionado
                     avatarButton.setBackgroundResource(R.drawable.avatar_border);
-
-                    // obtém o drawable
                     selectedAvatarDrawable = avatarDrawables[index];
                 });
             }
@@ -132,12 +119,13 @@ public class PerfilCadKid extends AppCompatActivity {
                 return;
             }
 
-            int idade = calcularIdade(data);
+            // Converte "dd/MM/yyyy" → "yyyy-MM-ddT00:00:00Z"
+            String dataNascISO = formatarDataISO(data);
 
             // ==========================
             //       PEGAR SEXO
             // ==========================
-            String sexo = "N"; // padrão
+            String sexo = "N";
             RadioGroup grupoSexo = findViewById(R.id.cadKidRadioGroupGenero);
             int selectedId = grupoSexo.getCheckedRadioButtonId();
 
@@ -152,52 +140,36 @@ public class PerfilCadKid extends AppCompatActivity {
             // ==========================
             String avatarUrl = AvatarMapper.getAvatarUrlFromResource(selectedAvatarDrawable);
 
-            // ID do usuário logado
             int usuarioId = LoginAuth.getUserId(this);
 
-            // Enviar para o backend
-            criarDependente(nome, idade, sexo, avatarUrl, usuarioId);
-
+            criarDependente(nome, dataNascISO, sexo, avatarUrl, usuarioId);
         });
     }
 
-    // ======================
-    //     CALCULAR IDADE
-    // ======================
-    private int calcularIdade(String dataNascimento) {
+    // ===============================================
+    //  Converte "dd/MM/yyyy" → "yyyy-MM-ddT00:00:00Z"
+    // ===============================================
+    private String formatarDataISO(String dataNascimento) {
         try {
             String[] parts = dataNascimento.split("/");
-            int dia = Integer.parseInt(parts[0]);
-            int mes = Integer.parseInt(parts[1]);
-            int ano = Integer.parseInt(parts[2]);
-
-            Calendar hoje = Calendar.getInstance();
-            Calendar nasc = Calendar.getInstance();
-            nasc.set(ano, mes - 1, dia);
-
-            int idade = hoje.get(Calendar.YEAR) - nasc.get(Calendar.YEAR);
-
-            if (hoje.get(Calendar.MONTH) < nasc.get(Calendar.MONTH) ||
-                    (hoje.get(Calendar.MONTH) == nasc.get(Calendar.MONTH) &&
-                            hoje.get(Calendar.DAY_OF_MONTH) < nasc.get(Calendar.DAY_OF_MONTH))) {
-                idade--;
-            }
-
-            return idade;
+            String dia = parts[0];
+            String mes = parts[1];
+            String ano = parts[2];
+            return String.format("%s-%s-%sT00:00:00Z", ano, mes, dia);
         } catch (Exception e) {
-            return 0;
+            return "";
         }
     }
 
     // ======================
     //   CHAMAR cadastrar(...)
     // ======================
-    private void criarDependente(String nome, int idade, String sexo, String avatarUrl, int usuarioId) {
+    private void criarDependente(String nome, String dataNasc, String sexo, String avatarUrl, int usuarioId) {
 
         new Thread(() -> {
             try {
                 JSONObject resp = DependenteService.cadastrar(
-                        this, nome, idade, sexo, avatarUrl, usuarioId
+                        this, nome, dataNasc, sexo, avatarUrl, usuarioId
                 );
 
                 runOnUiThread(() -> {

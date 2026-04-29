@@ -21,7 +21,7 @@ import okhttp3.Response;
 
 public class DependenteService {
 
-    private static final String BASE = "/dependente";
+    private static final String BASE = "/dependentes";
 
     // ==========================================================
     //                         GET
@@ -43,7 +43,7 @@ public class DependenteService {
 
     // 🔹 Histórico de jogos do dependente
     public static JSONArray getInfoJogos(Context context, long id) throws Exception {
-        Response response = ApiClient.get(context, BASE + "/infoJogosByDependente/" + id);
+        Response response = ApiClient.get(context, BASE + "/infoJogos/dependente/" + id);
         String resp = response.body().string();
         return new JSONArray(resp);
     }
@@ -56,7 +56,7 @@ public class DependenteService {
             Log.d("DEPENDENTE_DEBUG", "UserID recebido: " + userId);
         }
 
-        Response response = ApiClient.get(context, "/dependente/getDependenteByIdUsuario/" + userId);
+        Response response = ApiClient.get(context, "/dependentes/usuario/" + userId);
 
         if (BuildConfig.DEBUG) {Log.d("DEPENDENTE_DEBUG", "Response recebido. Status: " + response.code());}
 
@@ -106,17 +106,17 @@ public class DependenteService {
     // ==========================================================
 
     // 🔹 Cadastrar dependente
-    public static JSONObject cadastrar(Context context, String nome, int idade, String sexo, String avatar, int usuarioId) throws Exception {
+    public static JSONObject cadastrar(Context context, String nome, String dataNasc, String sexo, String avatar, int usuarioId) throws Exception {
 
         JSONObject dep = new JSONObject();
         dep.put("nome", nome);
-        dep.put("idade", idade);
+        dep.put("dataNascimento", dataNasc);
         dep.put("sexo", sexo);
         dep.put("foto", avatar);
 
         JSONObject usuario = new JSONObject();
         usuario.put("id", usuarioId);
-        dep.put("usuario_id_fk", usuario);
+        dep.put("usuario", usuario);
 
         if (BuildConfig.DEBUG) {Log.d("API_DEBUG", "Enviando JSON: " + dep.toString());}
 
@@ -130,18 +130,18 @@ public class DependenteService {
     // ==========================================================
 
     // 🔹 Atualização completa
-    public static JSONObject atualizar(Context context, int id, String nome, int idade, String sexo, String avatar, int usuarioId) throws Exception {
+    public static JSONObject atualizar(Context context, int id, String nome, String dataNasc, String sexo, String avatar, int usuarioId) throws Exception {
 
         JSONObject dep = new JSONObject();
         dep.put("id", id);
         dep.put("nome", nome);
-        dep.put("idade", idade);
+        dep.put("dataNascimento", dataNasc);
         dep.put("sexo", sexo);
         dep.put("foto", avatar);
 
         JSONObject usuario = new JSONObject();
         usuario.put("id", usuarioId);
-        dep.put("usuario_id_fk", usuario);
+        dep.put("usuario", usuario);
 
         Response response = ApiClient.put(context, BASE, dep.toString());
         String resp = response.body().string();
@@ -172,7 +172,7 @@ public class DependenteService {
 
     public static List<Partida> getPartidasByDependente(Context context, int dependenteId) throws Exception {
 
-        String url = BASE + "/infoJogosByDependente/" + dependenteId;
+        String url = "/infoJogos/dependente/" + dependenteId;
 
         Response response = ApiClient.get(context, url);
         String resp = response.body().string();
@@ -198,11 +198,9 @@ public class DependenteService {
 
     public static void baixarRelatorioPdf(Context context, int dependenteId) {
         try {
-            // Se o seu ApiClient tiver uma constante BASE_URL, use ela aqui.
-            // Exemplo: "https://seu-backend.onrender.com/dependente/relatorio/123"
-            String urlCompleta = Api.BASE_URL + BASE + "/exportPdf/" + dependenteId;
+            String urlCompleta = Api.BASE_URL + BASE + "/" + dependenteId + "/export/pdf";
             Log.d("DOWNLOAD_URL", "URL: " + urlCompleta);
-            String nomeArquivo = "Relatorio_Dependente_" + dependenteId + ".pdf";
+            String nomeArquivo = "Relatorio_Kids_" + dependenteId + ".pdf";
 
             DownloadManager.Request request = new DownloadManager.Request(Uri.parse(urlCompleta));
 
@@ -210,7 +208,7 @@ public class DependenteService {
             request.addRequestHeader("Authorization", ApiClient.getToken(context));
 
             request.setTitle("Relatório Integra Kids");
-            request.setDescription("Baixando PDF do dependente...");
+            request.setDescription("Baixando PDF da criança...");
 
             // Configura para salvar na pasta pública de Downloads
             request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, nomeArquivo);
@@ -237,8 +235,7 @@ public class DependenteService {
 
     public static void baixarRelatorioExcel(Context context, long dependenteId) {
         try {
-            // Ajuste o endpoint conforme definido no seu backend (ex: /exportExcel)
-            String endpoint = BASE + "/exportExcel/" + dependenteId;
+            String endpoint = BASE + "/" + dependenteId + "/export/excel";
             String urlCompleta = Api.BASE_URL + endpoint;
             String token = ApiClient.getToken(context);
 

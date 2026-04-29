@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.integra_kids_mobile.LoginCadastro;
 import com.example.integra_kids_mobile.MenuPrincipal;
@@ -17,18 +18,19 @@ public class LoginAuth {
     private static final String KEY_ID = "user_id";
     private static final String KEY_NOME = "user_nome";
     private static final String KEY_EMAIL = "user_email";
+    private static final String KEY_PASS = "user_password";
     private static final String KEY_TOKEN = "user_token";
 
     // ---------------------------------------------------------
     //                     LOGIN
     // ---------------------------------------------------------
-    public static boolean login(Context context, String usuario, String senha) {
+    public static boolean login(Context context, String email, String senha) {
         try {
             // envia JSON {"usuario": "...", "senha": "..."}
-            JSONObject resp = UsuarioService.logar(context, usuario, senha);
+            JSONObject resp = UsuarioService.logar(context, email, senha);
 
             if (resp.has("token")) {
-                saveUserData(context, resp);
+                saveUserData(context, resp, senha);
                 return true;
             }
 
@@ -43,9 +45,9 @@ public class LoginAuth {
     // ---------------------------------------------------------
     //                     CADASTRO
     // ---------------------------------------------------------
-    public static boolean cadastrar(Context context, String nome, String usuario, String senha) {
+    public static boolean cadastrar(Context context, String nome, String email, String senha) {
         try {
-            JSONObject resp = UsuarioService.cadastrar(context, nome, usuario, senha);
+            JSONObject resp = UsuarioService.cadastrar(context, nome, email, senha);
 
             // Sucesso se veio id do usuário
             if (resp.has("id")) {
@@ -62,7 +64,7 @@ public class LoginAuth {
     // ---------------------------------------------------------
     //           SALVAR DADOS DO USUÁRIO LOGADO
     // ---------------------------------------------------------
-    private static void saveUserData(Context context, JSONObject json) throws Exception {
+    private static void saveUserData(Context context, JSONObject json, String senha) throws Exception {
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
 
@@ -72,11 +74,14 @@ public class LoginAuth {
         if (json.has("nome"))
             editor.putString(KEY_NOME, json.getString("nome"));
 
-        if (json.has("usuario"))
-            editor.putString(KEY_EMAIL, json.getString("usuario"));
+        if (json.has("email"))
+            editor.putString(KEY_EMAIL, json.getString("email"));
 
         if (json.has("token"))
-            editor.putString(KEY_TOKEN, json.getString("token"));
+            editor.putString(KEY_TOKEN, "Bearer " + json.getString("token"));
+
+        if(senha != null)
+            editor.putString(KEY_PASS, senha);
 
         editor.apply();
     }
@@ -105,11 +110,27 @@ public class LoginAuth {
     //         REDIRECIONAR PARA MENU SE JÁ ESTIVER LOGADO
     // ---------------------------------------------------------
     public static void checkLoginRedirect(Context context) {
-        if (isLogged(context)) {
-            Intent i = new Intent(context, MenuPrincipal.class);
-            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            context.startActivity(i);
-        }
+        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        String email = prefs.getString(KEY_EMAIL, null);
+        String senha = prefs.getString(KEY_PASS, null);
+
+        // Sem sessao anterior -> fica na tela de login
+        if (email == null || senha == null) return;
+
+        // Renova o token em background e so entao redireciona
+        new Thread(() -> {
+            boolean ok = login(context, email, senha);
+
+            new android.os.Handler(android.os.Looper.getMainLooper()).post(() -> {
+                if (ok) {
+                    Toast.makeText(context, "Sessão renovada automaticamente 🔄", Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(context, MenuPrincipal.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    context.startActivity(i);
+                }
+                // se falhou -> fica na tela de login sem fazer nada
+            });
+        }).start();
     }
 
     // ---------------------------------------------------------

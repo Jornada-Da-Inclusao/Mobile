@@ -48,14 +48,14 @@ public class GameService {
 
     // 🔹 GET /infoJogos/{id}
     public static JSONObject getInfoById(Context context, long id) throws Exception {
-        Response response = ApiClient.get(context, BASE_INFO + "/" + id);
+        Response response = ApiClient.get(context, BASE_INFO + "/dependente/" + id);
         String resp = response.body().string();
         return new JSONObject(resp);
     }
 
     // 🔹 GET /infoJogos/dependente/{id}
     public static JSONArray getInfosByDependente(Context context, long depId) throws Exception {
-        Response response = ApiClient.get(context, BASE_INFO + "/dependente/" + depId);
+        Response response = ApiClient.get(context,  "/dependentes/" + BASE_INFO + depId);
         String resp = response.body().string();
         return new JSONArray(resp);
     }
@@ -65,7 +65,6 @@ public class GameService {
     //                        POST
     // ==========================================================
 
-    // 🔹 POST /infoJogos/cadastrar
     public static JSONObject registrarResultado(
             Context context,
             long dependenteId,
@@ -84,9 +83,10 @@ public class GameService {
         jogo.put("id", infoJogoId);
 
         body.put("dependente", dep);
-        body.put("infoJogos_id_fk", jogo);
-        body.put("acertos", acertos);
-        body.put("erros", erros);
+        body.put("jogo", jogo);
+        body.put("totalTentativas", acertos + erros);
+        body.put("totalAcertos", acertos);
+        body.put("totalErros", erros);
         body.put("tempoTotal", tempo);
 
         if (BuildConfig.DEBUG) {Log.d("JSON_ENVIADO", body.toString());}
@@ -100,7 +100,6 @@ public class GameService {
     //                        PUT
     // ==========================================================
 
-    // 🔹 PUT /infoJogos/atualizar
     public static JSONObject atualizarInfo(
             Context context,
             long id,
@@ -117,16 +116,17 @@ public class GameService {
             body.put("id", id);
 
             JSONObject dep = new JSONObject();
-            dep.put("id", dependenteId);
+            dep.put("dependenteId", dependenteId);
 
             JSONObject jogo = new JSONObject();
-            jogo.put("id", jogoId);
+            jogo.put("jogoId", jogoId);
 
             body.put("dependente", dep);
             body.put("jogo", jogo);
-            body.put("acertos", acertos);
-            body.put("erros", erros);
-            body.put("tempo", tempo);
+            body.put("totalTentativas", acertos + erros);
+            body.put("totalAcertos", acertos);
+            body.put("totalErros", erros);
+            body.put("tempoTotal", tempo);
 
         } catch (Exception e) {
             throw e;
@@ -135,7 +135,7 @@ public class GameService {
         Response response = null;
 
         try {
-            response = ApiClient.put(context, BASE_INFO + "/atualizar", body.toString());
+            response = ApiClient.put(context, BASE_INFO, body.toString());
         } catch (Exception e) {
             throw e;
         }
@@ -157,7 +157,6 @@ public class GameService {
     //                       DELETE
     // ==========================================================
 
-    // 🔹 DELETE /infoJogos/{id}
     public static boolean deletarInfo(Context context, long id) throws Exception {
         Response response = ApiClient.delete(context, BASE_INFO + "/" + id);
         return response.isSuccessful();

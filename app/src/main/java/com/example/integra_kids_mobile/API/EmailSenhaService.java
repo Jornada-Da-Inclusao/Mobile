@@ -17,28 +17,13 @@ public class EmailSenhaService {
     //                  SENHA CONTROLLER
     // ---------------------------------------------------------
 
-    // 🔹 POST /senha/recuperar/{email}
-    public static boolean recuperarSenha(String email) throws Exception {
-        String endpoint = "/senha/recuperar/" + email;
-
-        Request request = new Request.Builder()
-                .url(Api.BASE_URL + endpoint)
-                .post(RequestBody.create("", JSON))
-                .build();
-
-        try (Response response = client.newCall(request).execute()) {
-            return response.isSuccessful();
-        }
-    }
-
-    // 🔹 PUT /senha/alterar
-    public static boolean alterarSenha(String email, String novaSenha) throws Exception {
+    public static boolean alterarSenha(String token, String novaSenha) throws Exception {
 
         JSONObject body = new JSONObject();
-        body.put("email", email);
+        body.put("token", token);
         body.put("senha", novaSenha);
 
-        return put("/senha/alterar", body).isSuccessful();
+        return put("/senha/atualizar", body).isSuccessful();
     }
 
 
@@ -47,17 +32,15 @@ public class EmailSenhaService {
     // ---------------------------------------------------------
 
     // 🔹 POST /email/enviar
-    public static boolean enviarEmail(String email, String assunto, String mensagem) throws Exception {
+    public static boolean enviarEmail(String email) throws Exception {
 
         JSONObject body = new JSONObject();
         body.put("email", email);
-        body.put("assunto", assunto);
-        body.put("mensagem", mensagem);
 
         RequestBody reqBody = RequestBody.create(body.toString(), JSON);
 
         Request request = new Request.Builder()
-                .url(Api.BASE_URL + "/email/enviar")
+                .url(Api.BASE_URL + "/emailApi/token/" + email)
                 .post(reqBody)
                 .build();
 

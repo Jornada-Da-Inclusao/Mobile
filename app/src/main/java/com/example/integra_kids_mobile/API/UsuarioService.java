@@ -10,16 +10,16 @@ import okhttp3.Response;
 
 public class UsuarioService {
 
-    private static final String BASE_URL = "https://backend-9qjw.onrender.com";
+    private static final String BASE_URL = Api.BASE_URL;;
 
     // -----------------------
     // LOGIN → envia usuario + senha
     // -----------------------
-    public static JSONObject logar(Context context, String usuario, String senha) throws Exception {
+    public static JSONObject logar(Context context, String email, String senha) throws Exception {
         String url = BASE_URL + "/usuarios/logar";
 
         JSONObject json = new JSONObject();
-        json.put("usuario", usuario); // ⚠️ o backend espera "usuario"
+        json.put("email", email); // ⚠️ o backend espera "usuario"
         json.put("senha", senha);
 
         // 🔹 LOG do JSON que será enviado
@@ -50,12 +50,12 @@ public class UsuarioService {
     // -----------------------
     // CADASTRO
     // -----------------------
-    public static JSONObject cadastrar(Context context, String nome, String usuario, String senha) throws Exception {
-        String url = BASE_URL + "/usuarios/cadastrar";
+    public static JSONObject cadastrar(Context context, String nome, String email, String senha) throws Exception {
+        String url = BASE_URL + "/usuarios";
 
         JSONObject json = new JSONObject();
         json.put("nome", nome);
-        json.put("usuario", usuario);
+        json.put("email", email);
         json.put("senha", senha);
 
         Response resp = ApiClient.postNoAuth(url, json.toString());
@@ -76,8 +76,8 @@ public class UsuarioService {
     // PATCH /usuarios/{id}
     // -----------------------
 // PATCH /usuarios/atualizar-parcial
-    public static JSONObject atualizarParcial(Context context, String jsonBody) throws Exception {
-        String endpoint = "/usuarios/atualizar-parcial"; // sem ID na URL
+    public static JSONObject atualizarParcial(Context context, String jsonBody, long id) throws Exception {
+        String endpoint = "/usuarios/" + id;
         Response resp = ApiClient.patch(context, endpoint, jsonBody);
         return new JSONObject(resp.body().string());
     }

@@ -11,9 +11,9 @@ import android.widget.FrameLayout;
 public class Timer extends androidx.appcompat.widget.AppCompatTextView {
 
     private final Handler handler = new Handler();
-    private int time = 180_000;
+    private int elapsed = 0; // começa do zero e cresce
 
-    private long startedAt = 0;  // marca o início real
+    private long startedAt = 0;
 
     public Timer(Context context) {
         super(context);
@@ -26,7 +26,6 @@ public class Timer extends androidx.appcompat.widget.AppCompatTextView {
 
     private TimerListener listener;
 
-    // Método para a Activity se "inscrever" no aviso
     public void setTimerListener(TimerListener listener) {
         this.listener = listener;
     }
@@ -40,13 +39,10 @@ public class Timer extends androidx.appcompat.widget.AppCompatTextView {
         handler.removeCallbacks(updateTimer);
     }
 
+    // Retorna o tempo decorrido em segundos
     public int getTime() {
         long now = System.currentTimeMillis();
-        return (int) ((now - startedAt) / 1000);  // segundos reais
-    }
-    public void setInitialTime(int millis) {
-        this.time = millis;
-        setTimerText(formatTimerString());
+        return (int) ((now - startedAt) / 1000);
     }
 
     private void init() {
@@ -68,8 +64,8 @@ public class Timer extends androidx.appcompat.widget.AppCompatTextView {
     }
 
     private String formatTimerString() {
-        int minutes = (time / 1000) / 60;
-        int seconds = (time / 1000) % 60;
+        int minutes = (elapsed / 1000) / 60;
+        int seconds = (elapsed / 1000) % 60;
         return String.format("%02d:%02d", minutes, seconds);
     }
 
@@ -79,16 +75,7 @@ public class Timer extends androidx.appcompat.widget.AppCompatTextView {
 
     private final Runnable updateTimer = new Runnable() {
         public void run() {
-            if (time <= 0) {
-                // Quando o tempo zerar, avisa quem estiver ouvindo
-                if (listener != null) {
-                    listener.onTimeFinished();
-                }
-                stopTimer(); // Garante que pare o postDelayed
-                return;
-            }
-
-            time -= 1000;
+            elapsed += 1000; // cresce 1 segundo
             setTimerText(formatTimerString());
             handler.postDelayed(this, 1000);
         }
