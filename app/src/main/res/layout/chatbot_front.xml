@@ -10,8 +10,9 @@
     tools:context=".ui.chatbot.ChatbotFront">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerChat"
         android:background="@drawable/border"
-        android:backgroundTint="@color/icon"
+        android:backgroundTint="@color/transparent"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginHorizontal="20dp"
@@ -23,6 +24,7 @@
         android:id="@+id/imageView"
         android:layout_width="250dp"
         android:layout_height="250dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -39,30 +41,35 @@
         android:gravity="center_vertical"
         android:paddingHorizontal="16dp"
         android:paddingBottom="20dp"
+        android:paddingTop="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:enabled="false"
             android:id="@+id/inputLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginEnd="8dp"> <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="LP está dormindo agora, volte depois" />
+            android:layout_marginEnd="8dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editMensagem"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:hint="Digite sua mensagem..." />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
+        <ImageButton
             android:id="@+id/btnInputChatSend"
-            android:enabled="false"
-            android:alpha="0.5"
-            android:layout_width="55dp"
-            android:layout_height="match_parent"
-            style="@style/PrimaryButton"
-            android:text="➤" />
+            android:layout_width="60dp"
+            android:layout_height="70dp"
+            android:layout_gravity="bottom"
+            android:backgroundTint="@color/red"
+            android:padding="15dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/send"
+            app:tint="#FFFFFF" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
