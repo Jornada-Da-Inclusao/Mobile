@@ -36,17 +36,49 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Frase motivacional -->
+
+    <ProgressBar
+        android:id="@+id/progressConnect"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/red"
+        android:progressTint="@color/red"
+        android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvStatusTentativas"
+        android:layout_marginHorizontal="80dp"
+        app:layout_constraintVertical_bias="0.116" />
+
     <TextView
         android:id="@+id/tvFrase"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Aguarde só um momentinho :)"
-        android:textSize="16sp"
-        android:textColor="@color/text"
+        android:layout_marginTop="16dp"
         android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/tvStatusTentativas"
+        android:text="Aguarde só um momentinho :)"
+        android:textColor="@color/text"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/progressConnect" />
+
+    <Button
+        android:id="@+id/btnReloadConnection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/PrimaryButton"
+        android:text="Tentar novamente"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.95" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

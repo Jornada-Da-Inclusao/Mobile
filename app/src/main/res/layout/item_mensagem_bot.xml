@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="8dp">
 
@@ -9,18 +10,23 @@
         android:id="@+id/textMensagem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/green"
+        android:background="@drawable/border_fill"
+        android:backgroundTint="@color/charcoal"
         android:padding="10dp"
-        android:textColor="@color/black"
+        android:textSize="15dp"
+        android:textColor="@color/white"
         android:maxWidth="260dp" />
 
     <!-- Botões de quickActions aparecem aqui -->
-    <LinearLayout
+    <com.google.android.flexbox.FlexboxLayout
         android:id="@+id/layoutQuickActions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_marginTop="6dp"
-        android:visibility="gone" />
+        android:visibility="gone"
+        app:flexWrap="wrap"
+        app:flexDirection="row"
+        app:alignItems="flex_start"
+        app:justifyContent="flex_start" />
 
 </LinearLayout>

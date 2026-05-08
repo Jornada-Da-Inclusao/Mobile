@@ -162,7 +162,13 @@ public class ChatbotFront extends Fragment {
             @Override
             public void onResponse(Call<BotMessage> call, Response<BotMessage> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    exibirMensagemBot(response.body().getText());
+
+                    BotMessage bot = response.body();
+
+                    exibirMensagemBot(
+                            bot.getText(),
+                            bot.getQuickActions()
+                    );
                 }
                 if (getActivity() != null) {
                     getActivity().runOnUiThread(() -> btnInputChatSend.setEnabled(true));
@@ -185,10 +191,21 @@ public class ChatbotFront extends Fragment {
         recyclerChat.scrollToPosition(mensagens.size() - 1);
     }
 
-    private void exibirMensagemBot(String texto) {
+    private void exibirMensagemBot(String texto,
+                                   List<QuickAction> actions) {
+
         if (getActivity() != null) {
+
             getActivity().runOnUiThread(() -> {
-                mensagens.add(new ChatMensagem(texto, ChatMensagem.TIPO_BOT));
+
+                mensagens.add(
+                        new ChatMensagem(
+                                texto,
+                                ChatMensagem.TIPO_BOT,
+                                actions
+                        )
+                );
+
                 adapter.notifyItemInserted(mensagens.size() - 1);
                 recyclerChat.scrollToPosition(mensagens.size() - 1);
             });

@@ -4,14 +4,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.integra_kids_mobile.R;
 import com.example.integra_kids_mobile.chatbot.ChatMensagem;
 import com.example.integra_kids_mobile.chatbot.QuickAction;
+import com.google.android.flexbox.FlexboxLayout;
 
 import java.util.List;
 
@@ -63,13 +66,20 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MensagemViewHo
                 for (QuickAction action : actions) {
                     Button btn = new Button(holder.itemView.getContext());
                     btn.setText(action.getLabel());
-                    btn.setTextSize(12f);
 
+                    // ── Visual ──────────────────────────────────────────
+                    btn.setTextSize(12f);
+                    btn.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.text));
+                    btn.setBackground(ContextCompat.getDrawable(holder.itemView.getContext(), R.drawable.bg_quickaction));
+                    btn.setAllCaps(false);                  // remove o ALL CAPS padrão do Button
+                    btn.setPadding(32, 12, 32, 12);        // padding interno (px): left, top, right, bottom
+
+                    // ── Layout ──────────────────────────────────────────
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.WRAP_CONTENT,
                             LinearLayout.LayoutParams.WRAP_CONTENT
                     );
-                    params.setMargins(0, 4, 0, 4);
+                    params.setMargins(0, 6, 12, 6);
                     btn.setLayoutParams(params);
 
                     btn.setOnClickListener(v -> {
@@ -91,7 +101,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MensagemViewHo
 
     static class MensagemViewHolder extends RecyclerView.ViewHolder {
         TextView textMensagem;
-        LinearLayout layoutQuickActions;
+        FlexboxLayout layoutQuickActions;
 
         public MensagemViewHolder(@NonNull View itemView) {
             super(itemView);
