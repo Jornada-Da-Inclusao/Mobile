@@ -16,6 +16,7 @@ import com.example.integra_kids_mobile.BuildConfig;
 import com.example.integra_kids_mobile.R;
 import com.example.integra_kids_mobile.adapter.JogadorAdapter;
 import com.example.integra_kids_mobile.common.ReturnButton;
+import com.example.integra_kids_mobile.helper.AccessibilityHelper;
 import com.example.integra_kids_mobile.model.Jogador;
 import com.example.integra_kids_mobile.API.DependenteService;
 
@@ -40,6 +41,9 @@ public class PerfilTrocarPlayer extends AppCompatActivity implements JogadorAdap
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.perfil_trocar_player);
+
+        AccessibilityHelper.applyColorblindFilter(this);
+        AccessibilityHelper.applyFontScale(this);
 
         ReturnButton.configurar(this);
 

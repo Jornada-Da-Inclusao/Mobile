@@ -26,6 +26,7 @@ import com.example.integra_kids_mobile.BuildConfig;
 import com.example.integra_kids_mobile.R;
 import com.example.integra_kids_mobile.adapter.HistoricoAdapter;
 import com.example.integra_kids_mobile.common.ReturnButton;
+import com.example.integra_kids_mobile.helper.AccessibilityHelper;
 import com.example.integra_kids_mobile.model.DependenteCallback;
 import com.example.integra_kids_mobile.model.Partida;
 import com.github.mikephil.charting.charts.BarChart;
@@ -74,6 +75,9 @@ public class PerfilResultados extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.perfil_resultados);
+
+        AccessibilityHelper.applyColorblindFilter(this);
+        AccessibilityHelper.applyFontScale(this);
 
         ReturnButton.configurar(this);
 

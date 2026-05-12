@@ -33,8 +33,7 @@
     </style>
 
     <style name="GameButton" parent="Widget.AppCompat.Button">
-        <item name="android:paddingVertical">50dp</item>
-        <item name="android:layout_marginVertical">10dp</item>
+        <item name="android:paddingVertical">40dp</item>
         <item name="android:state_pressed">true</item>
         <item name="android:textColor">@color/text</item>
         <item name="android:textStyle">bold</item>
@@ -49,4 +48,15 @@
         <item name="textAllCaps">false</item>
         <item name="android:layout_marginVertical">20dp</item>
     </style>
+
+    <!-- Tema BASE (já deve existir no seu themes.xml, coloque lá se preferir) -->
+    <style name="Theme.App" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/tint</item>
+    </style>
+
+    <!-- Tema TEXTO GRANDE: herda tudo e só sobrescreve os tamanhos -->
+    <style name="Theme.App.LargeText">
+        <item name="android:textSize">20sp</item> <!-- base maior -->
+    </style>
+
 </resources>

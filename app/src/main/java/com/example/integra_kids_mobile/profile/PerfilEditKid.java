@@ -26,6 +26,7 @@ import com.example.integra_kids_mobile.API.DependenteService;
 import com.example.integra_kids_mobile.BuildConfig;
 import com.example.integra_kids_mobile.R;
 import com.example.integra_kids_mobile.common.ReturnButton;
+import com.example.integra_kids_mobile.helper.AccessibilityHelper;
 import com.example.integra_kids_mobile.utils.AvatarMapper;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -60,6 +61,9 @@ public class PerfilEditKid extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.perfil_edit_kid);
+
+        AccessibilityHelper.applyColorblindFilter(this);
+        AccessibilityHelper.applyFontScale(this);
 
         ReturnButton.configurar(this);
 

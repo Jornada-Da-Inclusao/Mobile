@@ -22,7 +22,7 @@
             style="@style/text_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="⚙️ Configurações ⚙️" />
+            android:text="Configurações" />
 
         <TextView
             android:id="@+id/textView10"
@@ -65,7 +65,7 @@
                 style="@style/text_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Acessibilidade [ Em manutenção ]" />
+                android:text="Acessibilidade" />
 
             <TextView
                 android:id="@+id/textView2"
@@ -82,15 +82,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <Switch
-            android:id="@+id/switch2"
-            style="@style/text_enun"
-            android:padding="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Resposta tátil (vibração)" />
-
         <RadioGroup
+            android:id="@+id/radioColorblind"
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
 
@@ -122,8 +115,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Deuteranomalia ( 🟩 🟰 🟥 ou 🟫 )" />
+
+            <RadioButton
+                android:id="@+id/radioButton9"
+                android:layout_marginHorizontal="40dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tritanomalia ( 🟦 🟰 🟨 )" />
         </RadioGroup>
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/btnResetConfig"
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="40dp"
+        android:layout_height="wrap_content"
+        android:text="Redefinir alterações"
+        style="@style/PrimaryButton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.95" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

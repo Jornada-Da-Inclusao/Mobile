@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.example.integra_kids_mobile.API.ApiClient;
 import com.example.integra_kids_mobile.chatbot.ChatStartResponse;
 import com.example.integra_kids_mobile.chatbot.RetrofitClient;
+import com.example.integra_kids_mobile.helper.AccessibilityHelper;
 
 import okhttp3.Response;
 import retrofit2.Call;
@@ -49,6 +50,9 @@ public class ConexaoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_conexao);
+
+        AccessibilityHelper.applyColorblindFilter(this);
+        AccessibilityHelper.applyFontScale(this);
 
         tvStatus = findViewById(R.id.tvStatusTentativas);
         tvFrase = findViewById(R.id.tvFrase);

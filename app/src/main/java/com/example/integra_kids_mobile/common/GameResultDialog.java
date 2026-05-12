@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.integra_kids_mobile.R;
+import com.example.integra_kids_mobile.helper.AccessibilityHelper;
 import com.example.integra_kids_mobile.music.BackgroundMusics;
 import com.example.integra_kids_mobile.music.SoundEffects;
 import com.example.integra_kids_mobile.profile.PerfilResultados;
@@ -18,6 +19,7 @@ public class GameResultDialog {
         public static void mostrarModalFeedback(Activity activity, boolean sucesso, int corTema) {
             LayoutInflater inflater = activity.getLayoutInflater();
             View dialogView = inflater.inflate(R.layout.dialog_resultado_jogo, null);
+            AccessibilityHelper.applyColorblindFilter(dialogView);
 
             AlertDialog dialog = new AlertDialog.Builder(activity).create();
             dialog.setView(dialogView);

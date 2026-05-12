@@ -26,6 +26,7 @@ import com.example.integra_kids_mobile.chatbot.ChatStartResponse;
 import com.example.integra_kids_mobile.chatbot.QuickAction;
 import com.example.integra_kids_mobile.chatbot.RetrofitClient;
 import com.example.integra_kids_mobile.chatbot.ChatMensagem;
+import com.example.integra_kids_mobile.helper.AccessibilityHelper;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -58,25 +59,25 @@ public class ChatbotFront extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.chatbot_front, container, false);
+        AccessibilityHelper.applyFontScale(view);
 
-        // ✅ Usa view.findViewById (não apenas findViewById como em Activity)
         recyclerChat = view.findViewById(R.id.recyclerChat);
         editMensagem = view.findViewById(R.id.editMensagem);
         inputLayout = view.findViewById(R.id.inputLayout);
         btnInputChatSend = view.findViewById(R.id.btnInputChatSend);
 
-        // Configura a RecyclerView
         adapter = new ChatAdapter(mensagens);
         recyclerChat.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerChat.setAdapter(adapter);
+        adapter.setOnScrollRequestListener(() -> {
+            recyclerChat.scrollToPosition(mensagens.size() - 1);
+        });
 
-// Quando clicar numa quickAction, envia como mensagem
         adapter.setOnQuickActionListener(value -> {
             adicionarMensagemUsuario(value);
             enviarMensagem(value);
         });
 
-        // Input começa desabilitado até a sessão iniciar
         inputLayout.setEnabled(false);
         btnInputChatSend.setEnabled(false);
 
@@ -94,7 +95,6 @@ public class ChatbotFront extends Fragment {
             }
         });
 
-        // ✅ Edge-to-edge corretamente dentro do onCreateView
         ViewCompat.setOnApplyWindowInsetsListener(view.findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             Insets ime = insets.getInsets(WindowInsetsCompat.Type.ime());
@@ -105,12 +105,13 @@ public class ChatbotFront extends Fragment {
         return view;
     }
 
-    // 1️⃣ Inicia a sessão ao abrir o chat
     private void iniciarSessao() {
         RetrofitClient.getInstance().startSession().enqueue(new Callback<ChatStartResponse>() {
             @Override
             public void onResponse(Call<ChatStartResponse> call, Response<ChatStartResponse> response) {
                 Log.d("Chatbot", "Código de resposta: " + response.code());
+
+                if (!isAdded() || getActivity() == null) return;
 
                 if (response.isSuccessful() && response.body() != null) {
                     sessionId = response.body().getSessionId();
@@ -121,8 +122,9 @@ public class ChatbotFront extends Fragment {
                     Log.d("Chatbot", "SessionId: " + sessionId);
                     Log.d("Chatbot", "Boas vindas: " + boasVindas);
 
-                    // ✅ Apenas UM runOnUiThread com actions
-                    requireActivity().runOnUiThread(() -> {
+                    getActivity().runOnUiThread(() -> {
+                        if (!isAdded()) return;
+
                         inputLayout.setEnabled(true);
                         btnInputChatSend.setEnabled(true);
 
@@ -134,7 +136,8 @@ public class ChatbotFront extends Fragment {
 
                 } else {
                     Log.e("Chatbot", "Resposta inválida: " + response.code());
-                    requireActivity().runOnUiThread(() -> {
+                    getActivity().runOnUiThread(() -> {
+                        if (!isAdded()) return;
                         inputLayout.setEnabled(true);
                         btnInputChatSend.setEnabled(true);
                     });
@@ -144,7 +147,10 @@ public class ChatbotFront extends Fragment {
             @Override
             public void onFailure(Call<ChatStartResponse> call, Throwable t) {
                 Log.e("Chatbot", "FALHA na sessão: " + t.getMessage());
-                requireActivity().runOnUiThread(() -> {
+                if (!isAdded() || getActivity() == null) return;
+
+                getActivity().runOnUiThread(() -> {
+                    if (!isAdded()) return;
                     inputLayout.setEnabled(true);
                     btnInputChatSend.setEnabled(true);
                 });
@@ -152,7 +158,6 @@ public class ChatbotFront extends Fragment {
         });
     }
 
-    // 2️⃣ Envia mensagem para a API
     private void enviarMensagem(String texto) {
         btnInputChatSend.setEnabled(false);
 
@@ -213,7 +218,6 @@ public class ChatbotFront extends Fragment {
     }
 
     private void esconderTeclado() {
-        // ✅ getSystemService via requireContext() em Fragment
         InputMethodManager imm = (InputMethodManager)
                 requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) imm.hideSoftInputFromWindow(editMensagem.getWindowToken(), 0);

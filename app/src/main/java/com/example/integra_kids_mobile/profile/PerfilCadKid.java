@@ -14,6 +14,7 @@ import com.example.integra_kids_mobile.API.DependenteService;
 import com.example.integra_kids_mobile.R;
 import com.example.integra_kids_mobile.auth.LoginAuth;
 import com.example.integra_kids_mobile.common.ReturnButton;
+import com.example.integra_kids_mobile.helper.AccessibilityHelper;
 import com.example.integra_kids_mobile.utils.AvatarMapper;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -45,6 +46,9 @@ public class PerfilCadKid extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.perfil_cad_kid);
         ReturnButton.configurar(this);
+
+        AccessibilityHelper.applyColorblindFilter(this);
+        AccessibilityHelper.applyFontScale(this);
 
         TextInputEditText inpNome = findViewById(R.id.cadKidInputNome);
         TextInputEditText inpData = findViewById(R.id.cadKidInputNascimento);

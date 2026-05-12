@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 
 import com.example.integra_kids_mobile.API.UsuarioService;
 import com.example.integra_kids_mobile.auth.LoginAuth;
+import com.example.integra_kids_mobile.helper.AccessibilityHelper;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.json.JSONObject;
@@ -35,6 +36,9 @@ public class LoginCadastro extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.login_cadastro);
+
+        AccessibilityHelper.applyColorblindFilter(this);
+        AccessibilityHelper.applyFontScale(this);
 
         SharedPreferences prefs = getSharedPreferences("AppPrefs", MODE_PRIVATE);
         int themeMode = prefs.getInt("themeMode", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);

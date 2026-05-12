@@ -4,9 +4,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.HorizontalScrollView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -54,50 +53,104 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MensagemViewHo
     @Override
     public void onBindViewHolder(@NonNull MensagemViewHolder holder, int position) {
         ChatMensagem mensagem = mensagens.get(position);
-        holder.textMensagem.setText(mensagem.getTexto());
 
-        if (holder.layoutQuickActions != null) {
-            List<QuickAction> actions = mensagem.getQuickActions();
+        // ── Typewriter effect só na última mensagem do bot ───────────────
+        if (mensagem.getTipo() == ChatMensagem.TIPO_BOT && position == mensagens.size() - 1) {
 
-            if (actions != null && !actions.isEmpty()) {
-                holder.layoutQuickActions.setVisibility(View.VISIBLE);
-                holder.layoutQuickActions.removeAllViews();
-
-                for (QuickAction action : actions) {
-                    Button btn = new Button(holder.itemView.getContext());
-                    btn.setText(action.getLabel());
-
-                    // ── Visual ──────────────────────────────────────────
-                    btn.setTextSize(12f);
-                    btn.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.text));
-                    btn.setBackground(ContextCompat.getDrawable(holder.itemView.getContext(), R.drawable.bg_quickaction));
-                    btn.setAllCaps(false);                  // remove o ALL CAPS padrão do Button
-                    btn.setPadding(32, 12, 32, 12);        // padding interno (px): left, top, right, bottom
-
-                    // ── Layout ──────────────────────────────────────────
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.WRAP_CONTENT,
-                            LinearLayout.LayoutParams.WRAP_CONTENT
-                    );
-                    params.setMargins(0, 6, 12, 6);
-                    btn.setLayoutParams(params);
-
-                    btn.setOnClickListener(v -> {
-                        if (onQuickActionListener != null) {
-                            onQuickActionListener.onQuickAction(action.getValue());
-                        }
-                    });
-
-                    holder.layoutQuickActions.addView(btn);
-                }
-            } else {
+            // Esconde as quickActions até o texto terminar de "digitar"
+            if (holder.layoutQuickActions != null) {
                 holder.layoutQuickActions.setVisibility(View.GONE);
+            }
+
+            animarTextoDigitando(holder.textMensagem, mensagem.getTexto(), () -> {
+                // Exibe as quickActions só depois que o texto terminar
+                if (holder.layoutQuickActions != null) {
+                    List<QuickAction> actions = mensagem.getQuickActions();
+                    if (actions != null && !actions.isEmpty()) {
+                        popularQuickActions(holder, actions);
+                        holder.layoutQuickActions.setVisibility(View.VISIBLE);
+                    }
+                }
+            });
+
+        } else {
+            // Mensagens antigas e mensagens do usuário aparecem normais
+            holder.textMensagem.setText(mensagem.getTexto());
+
+            // ── QuickActions para mensagens antigas ──────────────────────
+            if (holder.layoutQuickActions != null) {
+                List<QuickAction> actions = mensagem.getQuickActions();
+                if (actions != null && !actions.isEmpty()) {
+                    popularQuickActions(holder, actions);
+                    holder.layoutQuickActions.setVisibility(View.VISIBLE);
+                } else {
+                    holder.layoutQuickActions.setVisibility(View.GONE);
+                }
             }
         }
     }
 
+    // ── Monta os botões de quickActions no FlexboxLayout ─────────────────
+    private void popularQuickActions(@NonNull MensagemViewHolder holder, List<QuickAction> actions) {
+        holder.layoutQuickActions.removeAllViews();
+
+        for (QuickAction action : actions) {
+            Button btn = new Button(holder.itemView.getContext());
+            btn.setText(action.getLabel());
+
+            // ── Visual ───────────────────────────────────────────────────
+            btn.setTextSize(12f);
+            btn.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.text));
+            btn.setBackground(ContextCompat.getDrawable(holder.itemView.getContext(), R.drawable.bg_quickaction));
+            btn.setAllCaps(false);
+            btn.setPadding(32, 12, 32, 12);
+
+            // ── Layout: FlexboxLayout.LayoutParams para wrap correto ─────
+            FlexboxLayout.LayoutParams params = new FlexboxLayout.LayoutParams(
+                    FlexboxLayout.LayoutParams.WRAP_CONTENT,
+                    FlexboxLayout.LayoutParams.WRAP_CONTENT
+            );
+            params.setMargins(0, 6, 12, 6);
+            btn.setLayoutParams(params);
+
+            btn.setOnClickListener(v -> {
+                if (onQuickActionListener != null) {
+                    onQuickActionListener.onQuickAction(action.getValue());
+                }
+            });
+
+            holder.layoutQuickActions.addView(btn);
+        }
+    }
+
+    // ── Typewriter effect ─────────────────────────────────────────────────
+    private void animarTextoDigitando(TextView textView, String textoCompleto, Runnable aoTerminar) {
+        textView.setText("");
+        final int[] index = {0};
+
+        android.os.Handler handler = new android.os.Handler(android.os.Looper.getMainLooper());
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                if (index[0] <= textoCompleto.length()) {
+                    textView.setText(textoCompleto.substring(0, index[0]));
+                    index[0]++;
+                    if (onScrollRequestListener != null) {
+                        onScrollRequestListener.onScrollRequest();
+                    }
+                    handler.postDelayed(this, 18); // velocidade: menor = mais rápido
+                } else {
+                    if (aoTerminar != null) aoTerminar.run();
+                }
+            }
+        };
+        handler.post(runnable);
+    }
+
     @Override
-    public int getItemCount() { return mensagens.size(); }
+    public int getItemCount() {
+        return mensagens.size();
+    }
 
     static class MensagemViewHolder extends RecyclerView.ViewHolder {
         TextView textMensagem;
@@ -108,5 +161,16 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MensagemViewHo
             textMensagem = itemView.findViewById(R.id.textMensagem);
             layoutQuickActions = itemView.findViewById(R.id.layoutQuickActions);
         }
+    }
+
+    // Adiciona a interface e o setter (junto com o OnQuickActionListener)
+    public interface OnScrollRequestListener {
+        void onScrollRequest();
+    }
+
+    private OnScrollRequestListener onScrollRequestListener;
+
+    public void setOnScrollRequestListener(OnScrollRequestListener listener) {
+        this.onScrollRequestListener = listener;
     }
 }

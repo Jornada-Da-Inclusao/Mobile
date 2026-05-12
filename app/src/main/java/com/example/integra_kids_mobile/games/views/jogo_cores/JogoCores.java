@@ -28,6 +28,7 @@ import com.example.integra_kids_mobile.games.components.jogo_cores.ColorView;
 import com.example.integra_kids_mobile.games.InfoJogos;
 import com.example.integra_kids_mobile.API.GameService;
 import com.example.integra_kids_mobile.games.views.jogo_memoria.JogoMemoria;
+import com.example.integra_kids_mobile.helper.AccessibilityHelper;
 import com.example.integra_kids_mobile.music.BackgroundMusics;
 import com.example.integra_kids_mobile.music.SoundEffects;
 
@@ -53,6 +54,9 @@ public class JogoCores extends AppCompatActivity {
         setContentView(R.layout.jogo_cores);
         dependenteId = getSharedPreferences("USER_PREFS", MODE_PRIVATE)
             .getInt("selected_player_id", -1);
+
+        AccessibilityHelper.applyColorblindFilter(this);
+        AccessibilityHelper.applyFontScale(this);
 
         ReturnButton.configurar(this);
 

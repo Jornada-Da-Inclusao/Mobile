@@ -1,9 +1,24 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.Integrakidsmobile" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
+    <style name="Base.Theme.Integrakidsmobile" parent="Theme.Material3.DayNight.NoActionBar" />
+
+    <!-- Tema padrão do app -->
+    <style name="Theme.Integrakidsmobile" parent="Base.Theme.Integrakidsmobile">
+        <item name="colorPrimary">@color/tint</item>
     </style>
 
-    <style name="Theme.Integrakidsmobile" parent="Base.Theme.Integrakidsmobile" />
+    <!-- Protanomalia: herda do tema REAL do app -->
+    <style name="Theme.Integrakidsmobile.Protanomalia" parent="Theme.Integrakidsmobile">
+        <item name="colorPrimary">@color/prot_tint</item>
+    </style>
+
+    <!-- Deuteranomalia: herda do tema REAL do app -->
+    <style name="Theme.Integrakidsmobile.Deuteranomalia" parent="Theme.Integrakidsmobile">
+        <item name="colorPrimary">@color/deut_tint</item>
+    </style>
+
+    <style name="Theme.Integrakidsmobile.Tritanomalia" parent="Theme.Integrakidsmobile">
+        <item name="colorPrimary">@color/trit_tint</item>
+    </style>
+
 </resources>

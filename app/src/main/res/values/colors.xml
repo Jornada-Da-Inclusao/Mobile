@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Paleta NORMAL (já existente) -->
     <color name="text">#FF000000</color>
     <color name="background">#FFFFFFFF</color>
     <color name="tint">#e60000</color>
     <color name="icon">#687076</color>
-
     <color name="transparent">#00FFFFFF</color>
-
     <color name="red">#F44336</color>
     <color name="blue">#03A9F4</color>
     <color name="yellow">#FFEB3B</color>
@@ -14,10 +13,34 @@
     <color name="dark_green">#1F6F5F</color>
     <color name="orange">#FF9800</color>
     <color name="purple">#9C27B0</color>
-
     <color name="white">#FFFFFF</color>
     <color name="charcoal">#36454F</color>
     <color name="black">#000000</color>
 
+    <!-- Paleta DEUTERANOPIA (sem distinção verde/vermelho) -->
+    <color name="deut_tint">#0072B2</color>
+    <color name="deut_red">#D55E00</color>
+    <color name="deut_green">#009E73</color>
+    <color name="deut_yellow">#F0E442</color>
+    <color name="deut_blue">#56B4E9</color>
+    <color name="deut_orange">#E69F00</color>
+    <color name="deut_purple">#CC79A7</color>
 
+    <!-- Paleta PROTANOPIA (sem distinção de vermelho) -->
+    <color name="prot_tint">#005BBB</color>
+    <color name="prot_red">#E69F00</color>
+    <color name="prot_green">#009E73</color>
+    <color name="prot_yellow">#F0E442</color>
+    <color name="prot_blue">#56B4E9</color>
+    <color name="prot_orange">#D55E00</color>
+    <color name="prot_purple">#CC79A7</color>
+
+    <!-- Paleta TRITANOPIA (sem distinção azul/amarelo) -->
+    <color name="trit_tint">#C0392B</color>
+    <color name="trit_red">#E74C3C</color>
+    <color name="trit_green">#27AE60</color>
+    <color name="trit_yellow">#F39C12</color>
+    <color name="trit_blue">#E74C3C</color>
+    <color name="trit_orange">#D35400</color>
+    <color name="trit_purple">#8E44AD</color>
 </resources>

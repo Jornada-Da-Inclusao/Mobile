@@ -3,6 +3,7 @@ package com.example.integra_kids_mobile;
 import android.os.Bundle;
 
 import com.example.integra_kids_mobile.databinding.MenuPrincipalBinding;
+import com.example.integra_kids_mobile.helper.AccessibilityHelper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -18,8 +19,10 @@ private MenuPrincipalBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AccessibilityHelper.applyColorblindFilter(this);
+        AccessibilityHelper.applyFontScale(this);
 
-     binding = MenuPrincipalBinding.inflate(getLayoutInflater());
+        binding = MenuPrincipalBinding.inflate(getLayoutInflater());
      setContentView(binding.getRoot());
 
         BottomNavigationView navView = findViewById(R.id.nav_view);

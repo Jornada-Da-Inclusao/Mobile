@@ -17,6 +17,7 @@ import com.example.integra_kids_mobile.BuildConfig;
 import com.example.integra_kids_mobile.LoginCadastro;
 import com.example.integra_kids_mobile.R;
 import com.example.integra_kids_mobile.common.ReturnButton;
+import com.example.integra_kids_mobile.helper.AccessibilityHelper;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.json.JSONObject;
@@ -41,6 +42,9 @@ public class PerfilEditCad extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.perfil_edit_cad);
+
+        AccessibilityHelper.applyColorblindFilter(this);
+        AccessibilityHelper.applyFontScale(this);
 
         ReturnButton.configurar(this);
 

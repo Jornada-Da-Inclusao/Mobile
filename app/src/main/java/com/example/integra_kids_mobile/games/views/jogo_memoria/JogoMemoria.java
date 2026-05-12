@@ -15,6 +15,7 @@ import com.example.integra_kids_mobile.common.ReturnButton;
 import com.example.integra_kids_mobile.games.InfoJogos;
 import com.example.integra_kids_mobile.games.components.Timer;
 import com.example.integra_kids_mobile.API.GameService;
+import com.example.integra_kids_mobile.helper.AccessibilityHelper;
 import com.example.integra_kids_mobile.model.CardModel;
 import com.example.integra_kids_mobile.music.BackgroundMusics;
 import com.example.integra_kids_mobile.music.SoundEffects;
@@ -41,6 +42,9 @@ public class JogoMemoria extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.jogo_memoria);
+
+        AccessibilityHelper.applyColorblindFilter(this);
+        AccessibilityHelper.applyFontScale(this);
 
         ReturnButton.configurar(this);
 

@@ -36,6 +36,7 @@ import com.example.integra_kids_mobile.games.views.jogo_numeros.JogoNumeros3;
 import com.example.integra_kids_mobile.games.views.jogo_vogais.JogoVogais;
 import com.example.integra_kids_mobile.games.views.jogo_vogais.JogoVogais2;
 import com.example.integra_kids_mobile.games.views.jogo_vogais.JogoVogais3;
+import com.example.integra_kids_mobile.helper.AccessibilityHelper;
 import com.example.integra_kids_mobile.profile.PerfilTrocarPlayer;
 
 public class Jogos extends Fragment {
@@ -79,6 +80,9 @@ public class Jogos extends Fragment {
                 new ViewModelProvider(this).get(JogosViewModel.class);
     binding = JogosBinding.inflate(inflater, container, false);
     View root = binding.getRoot();
+
+        AccessibilityHelper.applyColorblindFilter(this);
+        AccessibilityHelper.applyFontScale(root);
 
         btnGame1 = root.findViewById(R.id.btnGame1);
         btnGame2 = root.findViewById(R.id.btnGame2);
@@ -169,6 +173,7 @@ public class Jogos extends Fragment {
     private void mostrarModalNivel() {
         LayoutInflater inflater = getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_niveis, null);
+        AccessibilityHelper.applyColorblindFilter(dialogView);
 
         // Use o construtor direto para ter mais controle sobre a Window
         AlertDialog dialog = new AlertDialog.Builder(requireContext()).create();
@@ -238,6 +243,8 @@ public class Jogos extends Fragment {
     private void mostrarModalPlayer(String nome, int id) {
         LayoutInflater inflater = getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_confirm_player, null);
+        AccessibilityHelper.applyColorblindFilter(dialogView);
+        AccessibilityHelper.applyFontScale(dialogView);
 
         AlertDialog dialog = new AlertDialog.Builder(requireContext()).create();
         dialog.setView(dialogView);
