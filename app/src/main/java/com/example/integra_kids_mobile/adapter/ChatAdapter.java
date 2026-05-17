@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.integra_kids_mobile.R;
 import com.example.integra_kids_mobile.chatbot.ChatMensagem;
 import com.example.integra_kids_mobile.chatbot.QuickAction;
+import com.example.integra_kids_mobile.ui.chatbot.AvatarView;
 import com.google.android.flexbox.FlexboxLayout;
 
 import java.util.List;
@@ -21,14 +22,33 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MensagemViewHo
 
     private List<ChatMensagem> mensagens;
 
+
     public interface OnQuickActionListener {
         void onQuickAction(String value);
     }
 
+    public interface OnBotMessageRenderedListener {
+        void onBotMessageRendered(ChatMensagem mensagem);
+    }
+
+    public interface OnTtsRequestListener {
+        void onTtsRequest(String texto);
+    }
+
     private OnQuickActionListener onQuickActionListener;
+    private OnBotMessageRenderedListener botListener;
+    private OnTtsRequestListener onTtsRequestListener;
 
     public void setOnQuickActionListener(OnQuickActionListener listener) {
         this.onQuickActionListener = listener;
+    }
+
+    public void setOnBotMessageRenderedListener(OnBotMessageRenderedListener listener) {
+        this.botListener = listener;
+    }
+
+    public void setOnTtsRequestListener(OnTtsRequestListener listener) {
+        this.onTtsRequestListener = listener;
     }
 
     public ChatAdapter(List<ChatMensagem> mensagens) {
@@ -53,6 +73,36 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MensagemViewHo
     @Override
     public void onBindViewHolder(@NonNull MensagemViewHolder holder, int position) {
         ChatMensagem mensagem = mensagens.get(position);
+
+        if (mensagem.getTipo() == ChatMensagem.TIPO_BOT) {
+
+            // ── Atualiza o avatar do item com a emoção da mensagem ────────
+            if (holder.avatarView != null) {
+                String emotion = mensagem.getEmotion();
+                if (emotion != null && !emotion.isEmpty()) {
+                    try {
+                        holder.avatarView.setExpression(emotion);
+                    } catch (IllegalArgumentException e) {
+                        holder.avatarView.setExpression(AvatarView.Expression.NEUTRAL);
+                    }
+                } else {
+                    holder.avatarView.setExpression(AvatarView.Expression.NEUTRAL);
+                }
+            }
+
+            if (botListener != null && position == mensagens.size() - 1) {
+                botListener.onBotMessageRendered(mensagem);
+            }
+
+            // ── Botão de ouvir a mensagem (TTS) ──────────────────────────
+            if (holder.btnOuvir != null) {
+                holder.btnOuvir.setOnClickListener(v -> {
+                    if (onTtsRequestListener != null) {
+                        onTtsRequestListener.onTtsRequest(mensagem.getTexto());
+                    }
+                });
+            }
+        }
 
         // ── Typewriter effect só na última mensagem do bot ───────────────
         if (mensagem.getTipo() == ChatMensagem.TIPO_BOT && position == mensagens.size() - 1) {
@@ -155,11 +205,15 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MensagemViewHo
     static class MensagemViewHolder extends RecyclerView.ViewHolder {
         TextView textMensagem;
         FlexboxLayout layoutQuickActions;
+        AvatarView avatarView;
+        android.widget.ImageButton btnOuvir;
 
         public MensagemViewHolder(@NonNull View itemView) {
             super(itemView);
             textMensagem = itemView.findViewById(R.id.textMensagem);
             layoutQuickActions = itemView.findViewById(R.id.layoutQuickActions);
+            avatarView = itemView.findViewById(R.id.avatarView);
+            btnOuvir = itemView.findViewById(R.id.btnOuvir); // só existe no item_mensagem_bot
         }
     }
 

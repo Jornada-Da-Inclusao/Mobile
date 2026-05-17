@@ -17,21 +17,8 @@
         android:layout_height="0dp"
         android:layout_marginHorizontal="20dp"
         android:layout_marginBottom="10dp"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/tv8"
         app:layout_constraintBottom_toTopOf="@+id/linearInput"/>
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.1"
-        android:src="@drawable/lp_status_inative" />
 
     <LinearLayout
         android:id="@+id/linearInput"
@@ -61,6 +48,18 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <ImageButton
+            android:id="@+id/btnMic"
+            android:layout_width="60dp"
+            android:layout_height="70dp"
+            android:layout_gravity="bottom"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="@color/red"
+            android:padding="15dp"
+            android:scaleType="centerInside"
+            android:src="@android:drawable/ic_btn_speak_now"
+            app:tint="#FFFFFF" />
+
+        <ImageButton
             android:id="@+id/btnInputChatSend"
             android:layout_width="60dp"
             android:layout_height="70dp"
@@ -72,4 +71,17 @@
             app:tint="#FFFFFF" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/text_title"
+        android:text="ChatBot"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.07" />
 </androidx.constraintlayout.widget.ConstraintLayout>
