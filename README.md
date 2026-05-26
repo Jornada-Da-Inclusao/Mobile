@@ -105,7 +105,7 @@ Para encontrá-lo, acesse https://github.com/Jornada-Da-Inclusao/Mobile/actions 
 <img width="1654" height="1002" alt="Design sem nome (1)" src="https://github.com/user-attachments/assets/b30b1b79-643d-4b5d-a53a-d2a81e279f65" />
 
 ### Ativando o Back-end
-Diferente da versão WEB (React JS), na versão mobile, o App exige que o banco esteja disponivel antes de liberar as telas de login, tentando acorda-lo logo no inicio do app, dado pela tela de carregamento inicial. Ao inicar o app, uma tela de loading rodará até o backend acorde, o que pode levar até uns 2 minutos no máximo.
+Diferente da versão WEB (React JS), na versão mobile, o App exige que o banco esteja disponivel antes de liberar as telas de login, tentando acorda-lo logo no inicio do app, dado pela tela de carregamento inicial. Ao iniciar o app, uma tela de loading rodará até o backend acorde, o que pode levar até uns 2 minutos no máximo.
 
 ## Screenshots
 
