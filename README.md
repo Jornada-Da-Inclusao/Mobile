@@ -101,7 +101,7 @@ Este projeto visa contribuir diretamente para os seguintes ODS:
 
 ## Como baixar o app
 É possivel realizar o download do nosso aplicativo pelo próprio github, atrevés do CI/CD do Github Actions.
-Para encontrá-lo, acesse https://github.com/Jornada-Da-Inclusao/Mobile/actions e clique no primeiro Workrun da lista, após isso, desça a pagina e baixe o app release presente no final dela, como mostrado no exemplo abaixao:
+Para encontrá-lo, acesse https://github.com/Jornada-Da-Inclusao/Mobile/actions e clique no primeiro Workrun da lista, após isso, desça a pagina e baixe o app release presente no final dela, como mostrado no exemplo abaixo:
 <img width="1654" height="1002" alt="Design sem nome (1)" src="https://github.com/user-attachments/assets/b30b1b79-643d-4b5d-a53a-d2a81e279f65" />
 
 ### Ativando o Back-end
