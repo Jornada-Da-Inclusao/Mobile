@@ -13,6 +13,7 @@
   - [IDEs](#ides)
   - [Frameworks](#frameworks)
 - [Paleta de cores](#paleta-de-cores)
+- [como baixar o app?](#como-baixar-o-app)
 - [Screenshots](#screenshots)
 - [Considerações Finais](#considerações-finais)
 
@@ -98,9 +99,13 @@ Este projeto visa contribuir diretamente para os seguintes ODS:
 | white | <img width="20" height="20" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PHJlY3Qgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiNjY2NjY2MiLz48L3N2Zz4=" /> | `#FFFFFF` |
 | black | <img width="20" height="20" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PHJlY3Qgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjMDAwMDAwIi8+PC9zdmc+" /> | `#000000` |
 
+## Como baixar o app
+É possivel realizar o download do nosso aplicativo pelo próprio github, atrevés do CI/CD do Github Actions.
+Para encontrá-lo, acesse https://github.com/Jornada-Da-Inclusao/Mobile/actions e clique no primeiro Workrun da lista, após isso, desça a pagina e baixe o app release presente no final dela, como mostrado no exemplo abaixao:
+<img width="1654" height="1002" alt="Design sem nome (1)" src="https://github.com/user-attachments/assets/b30b1b79-643d-4b5d-a53a-d2a81e279f65" />
 
 ### Ativando o Back-end
-Diferente da versão WEB (React JS), na versão mobile, o App exige que o banco esteja disponivel antes de liberar as telas de login, tentando acorda-lo logo no inicio do app, dado pela tela de carregamento inicial.
+Diferente da versão WEB (React JS), na versão mobile, o App exige que o banco esteja disponivel antes de liberar as telas de login, tentando acorda-lo logo no inicio do app, dado pela tela de carregamento inicial. Ao inicar o app, uma tela de loading rodará até o backend acorde, o que pode levar até uns 2 minutos no máximo.
 
 ## Screenshots
 
@@ -152,8 +157,8 @@ Obs: sujeito à alteração.
 
 ### <p align="center">Tela de configuração</p>
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/bf2e3135-41d6-4390-a888-b1cc7af98c7c" width="250" style="margin-right:20px;"/>
-  <img src="https://github.com/user-attachments/assets/4b8bd772-4132-4c1b-9de7-681364437bf7" width="250"/>
+  <img src="https://github.com/user-attachments/assets/cd620803-065f-439e-88c9-78e5f3033a57" width="250" style="margin-right:20px;"/>
+  <img src="https://github.com/user-attachments/assets/6acdd435-997b-4e63-aacd-673b7d53c83e" width="250"/>
 </p>
 
 ### <p align="center">Jogo dos Números</p>
@@ -208,6 +213,12 @@ Obs: sujeito à alteração.
 <p align="center">
   <img src="https://github.com/user-attachments/assets/e09ea161-5888-47bf-94ba-51c4fab3551c" width="250" style="margin-right:20px;"/>
   <img src="https://github.com/user-attachments/assets/ffb0bc47-1532-4a93-9a34-b5f48700bf7e" width="250"/>
+</p>
+
+### <p align="center">Tela do Chatbot (versão mobile)</p>
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/a065e909-16d6-426e-a6b2-a1c694900cac" width="250" style="margin-right:20px;"/>
+  <img src="https://github.com/user-attachments/assets/b1303fce-f65a-43ef-9216-02f4e1f267d2" width="250"/>
 </p>
 
 ## Considerações Finais
